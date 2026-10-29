@@ -104,8 +104,6 @@ docs/      как это устроено и разбор интервью
 
 Автоматические проверки на каждый пуш настроены в `.github/workflows/`.
 
-
-
 ## Автор и лицензия
 
 [FedorSolodkin](https://github.com/FedorSolodkin). Код распространяется по лицензии [MIT](LICENSE).
