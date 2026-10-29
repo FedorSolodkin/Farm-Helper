@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.DS_Store
+.env
+.env.*
+.claude/
+secrets.env
+deploy_flat/
+deploy_flat.zip
+deploy_pages/
+deploy_pages.zip
+audit.jsonl
+*.log
+data/
+# сырые заметки интервью с именем респондента: только локально
+custdev-notes.md

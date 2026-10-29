@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Доставка на неделю</title>
+<style>
+:root {
+  --font: ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --bg: #f2f5ee; --surface: #ffffff; --surface2: #f7f9f4; --ink: #14231a; --ink2: #44534a; --muted: #77857c; --line: #e0e7db;
+  --bar: rgba(242,245,238,.82);
+  --brand: #1f7a3e; --brand-ink: #ffffff; --brand-soft: #e3f1e7; --brand-deep: #0d4727;
+  --u3: #c4452b; --u3-soft: #fbe8e3; --u2: #9a6200; --u2-soft: #fbefd3; --u1: #2563a8; --u1-soft: #e2edf8;
+  --warn-soft: #fcefd0; --warn-text: #8a5a00;
+  --land: #eaf0e0; --land2: #dfe8d1; --water: #bcd7ea; --road: #ffffff; --roadline: #d3dcc7;
+  --shadow: 0 1px 2px rgba(20,35,26,.05), 0 10px 30px -12px rgba(20,35,26,.14);
+  --hero: linear-gradient(140deg, #0d4727 0%, #1b6e39 58%, #2b9a52 100%);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b120e; --surface: #15201a; --surface2: #1a2820; --ink: #eaf2ec; --ink2: #bccabf; --muted: #8a998f; --line: #25342b;
+    --bar: rgba(11,18,14,.82); --brand: #4fc27a; --brand-ink: #08150d; --brand-soft: #1c3326; --brand-deep: #0b2e1a;
+    --u3: #f08a70; --u3-soft: #3a211b; --u2: #e8b955; --u2-soft: #35291a; --u1: #86b9dc; --u1-soft: #1d2d3a;
+    --warn-soft: #33290f; --warn-text: #fab219;
+    --land: #16231b; --land2: #1b2c21; --water: #1f3a4f; --road: #2a3b30; --roadline: #34483b;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -12px rgba(0,0,0,.5);
+    --hero: linear-gradient(140deg, #0a2f1a 0%, #124d29 58%, #1c7a41 100%);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b120e; --surface: #15201a; --surface2: #1a2820; --ink: #eaf2ec; --ink2: #bccabf; --muted: #8a998f; --line: #25342b;
+  --bar: rgba(11,18,14,.82); --brand: #4fc27a; --brand-ink: #08150d; --brand-soft: #1c3326; --brand-deep: #0b2e1a;
+  --u3: #f08a70; --u3-soft: #3a211b; --u2: #e8b955; --u2-soft: #35291a; --u1: #86b9dc; --u1-soft: #1d2d3a;
+  --warn-soft: #33290f; --warn-text: #fab219;
+  --land: #16231b; --land2: #1b2c21; --water: #1f3a4f; --road: #2a3b30; --roadline: #34483b;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -12px rgba(0,0,0,.5);
+  --hero: linear-gradient(140deg, #0a2f1a 0%, #124d29 58%, #1c7a41 100%);
+}
+* { box-sizing: border-box; }
+html { color-scheme: light dark; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 var(--font); -webkit-font-smoothing: antialiased; }
+svg { flex: none; }
+h1, h2, h3, p { margin: 0; }
+button, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+.topbar { position: sticky; top: 0; z-index: 8; background: var(--bar); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+.topin { max-width: 1240px; margin: 0 auto; padding: 10px 20px; display: flex; align-items: center; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.01em; }
+.sp { flex: 1; }
+.pill { display: inline-flex; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px 16px; max-width: 46vw; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.iconbtn { width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); display: grid; place-items: center; color: var(--ink2); }
+.iconbtn:hover { background: var(--brand-soft); color: var(--brand); }
+.btn { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); font-weight: 700; transition: transform .12s, background .2s; }
+.btn:hover { background: var(--brand-soft); } .btn:active { transform: scale(.98); }
+.btn.primary { background: var(--brand); color: var(--brand-ink); border-color: transparent; box-shadow: 0 8px 18px -8px var(--brand); }
+.btn.primary:hover { filter: brightness(1.07); background: var(--brand); }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--ink2); font-weight: 600; }
+.btn.small { min-height: 34px; padding: 0 12px; border-radius: 11px; font-size: 14px; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 22px 20px 90px; }
+.fine { color: var(--muted); font-size: 13.5px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+.chip.urgent { background: var(--u3-soft); color: var(--u3); } .chip.soon { background: var(--u2-soft); color: var(--u2); } .chip.later { background: var(--u1-soft); color: var(--u1); }
+.chip.plain { background: var(--surface2); color: var(--ink2); border: 1px solid var(--line); font-weight: 600; }
+.chip.shift { background: var(--brand-soft); color: var(--brand); }
+.chip.warn { background: var(--warn-soft); color: var(--warn-text); }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+/* ---------- шапка страницы ---------- */
+.hero { background: var(--hero); color: #fff; border-radius: 26px; padding: 26px 28px; box-shadow: var(--shadow); display: grid; gap: 22px; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; }
+.hero h1 { font-size: clamp(26px, 4.4vw, 38px); letter-spacing: -.03em; font-weight: 800; line-height: 1.1; }
+.hero p { opacity: .88; margin-top: 8px; max-width: 46ch; }
+.hero .tag { display: inline-flex; gap: 6px; align-items: center; background: rgba(255,255,255,.16); border-radius: 999px; padding: 3px 11px; font-size: 12.5px; font-weight: 700; margin-bottom: 12px; }
+.kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.kpi { background: rgba(255,255,255,.12); border-radius: 18px; padding: 12px 14px; }
+.kpi .v { font-size: 26px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+.kpi .k { font-size: 12.5px; opacity: .8; margin-top: 2px; }
+@media (max-width: 860px) { .hero { grid-template-columns: 1fr; padding: 22px; } }
+
+/* ---------- карта и список ---------- */
+.grid { display: grid; gap: 22px; margin-top: 22px; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: start; }
+@media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow); }
+.mapcard { padding: 14px; position: sticky; top: 74px; }
+@media (max-width: 980px) { .mapcard { position: static; } }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+.seg { display: inline-flex; background: var(--surface2); border: 1px solid var(--line); border-radius: 12px; padding: 3px; }
+.seg button { border: 0; background: transparent; border-radius: 9px; padding: 6px 12px; font-weight: 700; font-size: 14px; color: var(--ink2); }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--brand); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.days { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.dchip { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 12px; font-size: 13.5px; font-weight: 700; color: var(--ink2); display: inline-flex; gap: 6px; align-items: center; }
+.dchip i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.dchip[aria-pressed="true"] { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+.map { width: 100%; height: auto; display: block; border-radius: 18px; background: var(--land); touch-action: manipulation; }
+.map .pin { cursor: pointer; }
+.map .pin circle.b { stroke: var(--surface); stroke-width: .5; }
+.map .pin text { fill: #fff; font-weight: 800; font-size: 2.3px; text-anchor: middle; pointer-events: none; font-family: var(--font); }
+.map .pin.dim { opacity: .28; }
+.map .pin:focus-visible circle.b { stroke: var(--ink); stroke-width: .8; }
+.map .dname { fill: var(--muted); font-size: 2.2px; font-weight: 700; text-anchor: middle; letter-spacing: .06em; text-transform: uppercase; pointer-events: none; font-family: var(--font); }
+.map .farm text { fill: var(--ink); font-size: 2.3px; font-weight: 800; text-anchor: middle; font-family: var(--font); }
+.map .halo { fill: none; stroke: var(--ink); stroke-width: .5; stroke-dasharray: 1.2 .9; animation: spin 7s linear infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .map .halo { animation: none; } }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.legend .per { border: 2px dashed var(--ink2); background: transparent; }
+
+.list { padding: 8px 8px 12px; }
+.lhead { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; padding: 10px 10px 8px; }
+.lhead h2 { font-size: 20px; letter-spacing: -.02em; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 10px 8px; }
+.row { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; padding: 12px 10px; border-radius: 16px; cursor: pointer; border: 1px solid transparent; }
+.row:hover { background: var(--surface2); }
+.row.sel { background: var(--brand-soft); border-color: var(--brand); }
+.rank { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 14px; }
+.rank.urgent { background: var(--u3); } .rank.soon { background: var(--u2); } .rank.later { background: var(--u1); }
+.row h3 { font-size: 15.5px; font-weight: 700; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.row .items { color: var(--ink2); font-size: 14px; margin-top: 2px; }
+.row .when { font-size: 13.5px; color: var(--muted); margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.row .when b { color: var(--ink); }
+.row .sum { font-weight: 800; white-space: nowrap; text-align: right; }
+.grp { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 10px; align-items: baseline; margin: 12px 10px 4px; padding: 8px 12px; border-radius: 12px; background: var(--surface2); border-left: 5px solid var(--tc); }
+.grp:first-child { margin-top: 2px; }
+.grp .gt { font-weight: 800; display: inline-flex; gap: 8px; align-items: center; }
+.grp .gt i { display: none; }
+.empty { padding: 24px; text-align: center; color: var(--muted); }
+
+/* ---------- рейсы ---------- */
+.sec { margin-top: 34px; }
+.sec > h2 { font-size: clamp(22px, 3.4vw, 28px); letter-spacing: -.025em; }
+.sec > p { color: var(--ink2); margin: 6px 0 16px; max-width: 70ch; }
+.trips { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); }
+.trip { padding: 16px 18px; border-top: 5px solid var(--tc, var(--brand)); }
+.trip h3 { font-size: 17px; display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.trip .meta { color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.trip ol { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 8px; }
+.trip li { display: grid; grid-template-columns: 52px 1fr auto; gap: 8px; font-size: 14px; align-items: baseline; }
+.trip li .eta { font-weight: 800; color: var(--ink); }
+.trip li small { color: var(--muted); display: block; }
+.trip footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; border-top: 1px dashed var(--line); padding-top: 12px; font-size: 14px; }
+.cmp { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-bottom: 18px; }
+.cmpc { padding: 16px 18px; }
+.cmpc h3 { font-size: 14px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.cmpc .big { font-size: 30px; font-weight: 800; letter-spacing: -.03em; margin: 4px 0; }
+.cmpc.win { border-color: var(--brand); background: var(--brand-soft); }
+.note { padding: 18px 22px; display: grid; gap: 8px; border-left: 5px solid var(--brand); }
+.note h3 { font-size: 17px; }
+.note blockquote { margin: 0; padding-left: 12px; border-left: 3px solid var(--line); color: var(--ink2); font-style: italic; }
+
+/* ---------- подсказка, тост, инструкция ---------- */
+#tipcard { position: fixed; z-index: 20; pointer-events: none; background: var(--ink); color: var(--bg); padding: 8px 12px; border-radius: 12px; font-size: 13px; max-width: 250px; opacity: 0; transition: opacity .12s; box-shadow: var(--shadow); }
+#tipcard.show { opacity: 1; }
+#toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: var(--ink); color: var(--bg); padding: 10px 18px; border-radius: 14px; font-weight: 600; opacity: 0; pointer-events: none; transition: .25s; z-index: 30; }
+#toast.show { opacity: 1; transform: translate(-50%, 0); }
+.tour { position: fixed; inset: 0; z-index: 40; background: rgba(5,12,8,.55); backdrop-filter: blur(3px); display: grid; place-items: center; padding: 16px; }
+.tourcard { background: var(--surface); border-radius: 26px; padding: 26px; max-width: 480px; width: 100%; box-shadow: var(--shadow); }
+.tourcard h2 { font-size: 24px; letter-spacing: -.02em; margin: 14px 0 8px; }
+.tourcard p { color: var(--ink2); }
+.tourcard .ico { width: 52px; height: 52px; border-radius: 17px; background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; }
+.tdemo { margin: 16px 0; padding: 14px; border-radius: 16px; background: var(--surface2); border: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; min-height: 64px; }
+.tdots { display: flex; gap: 6px; margin: 4px 0 16px; }
+.tdots i { flex: 1; height: 6px; border-radius: 99px; background: var(--line); } .tdots i.on { background: var(--brand); }
+.tnav { display: flex; gap: 8px; align-items: center; }
+.foot { margin-top: 28px; }
+.btn { white-space: nowrap; }
+@media (max-width: 640px) { #farmName { display: none; } .wrap { padding: 16px 14px 80px; } .topin { padding: 10px 14px; } }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topin">
+  <a class="btn ghost small" id="back" href="./" title="Вернуться к трём делам"></a>
+  <div class="brand" id="brand"></div>
+  <div class="sp"></div>
+  <span class="pill" id="farmName"></span>
+  <button class="iconbtn" id="helpBtn" aria-label="Как это работает" title="Как это работает"></button>
+  <button class="iconbtn" id="theme" aria-label="Сменить тему" title="Тема"></button>
+</div></header>
+
+<main class="wrap" id="app" aria-live="polite">
+  <p class="fine">Загружаю заказы…</p>
+</main>
+<div id="tipcard" role="tooltip"></div>
+<div id="toast" role="status"></div>
+<div class="tour" id="tour" hidden role="dialog" aria-modal="true" aria-label="Как работает доставка"></div>
+
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const NS = "http://www.w3.org/2000/svg";
+
+const ICONS = {
+  truck: '<path d="M3 6h11v10H3zM14 9h4l3 3v4h-7z"/><circle cx="7.5" cy="18" r="1.8"/><circle cx="17.5" cy="18" r="1.8"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>', back: '<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/>',
+  moon: '<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/>',
+  auto: '<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>',
+  help: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  shield: '<path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6z"/><path d="m9 12 2.2 2.2L15 10"/>',
+  pin: '<path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.800 12 21 12 21z"/><circle cx="12" cy="9.500" r="2.500"/>',
+  route: '<circle cx="6" cy="18" r="2.500"/><circle cx="18" cy="6" r="2.500"/><path d="M8.500 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.500"/>',
+  copy: '<rect x="8" y="8" width="12" height="12" rx="2.500"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',
+  quote: '<path d="M9 7H5v6h4l-1 4M19 7h-4v6h4l-1 4"/>',
+  check: '<path d="m5 12.5 4.5 4.5L19 7.500"/>',
+};
+function icon(name, size = 20, sw = 1.9) {
+  const s = document.createElementNS(NS, "svg");
+  for (const [k, v] of Object.entries({ viewBox: "0 0 24 24", width: size, height: size, fill: "none", stroke: "currentColor", "stroke-width": sw, "stroke-linecap": "round", "stroke-linejoin": "round", "aria-hidden": "true" })) s.setAttribute(k, v);
+  s.innerHTML = ICONS[name] || "";
+  return s;
+}
+function el(tag, props, ...kids) {
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(props || {})) {
+    if (k === "class") node.className = v;
+    else if (k.startsWith("on")) node.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) node.setAttribute(k, v === true ? "" : v);
+  }
+  for (const kid of kids.flat()) if (kid != null && kid !== false) node.append(kid.nodeType ? kid : document.createTextNode(kid));
+  return node;
+}
+function sv(tag, props, ...kids) {
+  const node = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(props || {})) {
+    if (k.startsWith("on")) node.addEventListener(k.slice(2), v);
+    else if (v != null && v !== false) node.setAttribute(k, v);
+  }
+  for (const kid of kids.flat()) if (kid != null) node.append(kid.nodeType ? kid : document.createTextNode(kid));
+  return node;
+}
+async function api(path, body) {
+  if (window.__localApi) return window.__localApi(path, body);  // автономная версия: движок работает в браузере
+  const res = await fetch("/api" + path, body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const data = await res.json();
+  if (!res.ok) throw Object.assign(new Error(data.error.message), { code: data.error.code });
+  return data;
+}
+
+const rub = (n) => Math.round(n).toLocaleString("ru-RU") + " ₽";
+const dayFmt = (iso, o = { weekday: "short", day: "numeric", month: "short" }) => new Date(iso + "T00:00:00").toLocaleDateString("ru-RU", o).replace(/\.$/, "");
+const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+const hm = (min) => (min >= 60 ? `${Math.floor(min / 60)} ч ` : "") + `${Math.round(min % 60)} мин`;
+const plural = (n, a, b, c) => (n % 10 === 1 && n % 100 !== 11 ? a : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? b : c);
+const COLORS = ["#2f6fb5", "#8e5bb5", "#d4822a", "#2a9d8f", "#b5486b", "#6b8a2f", "#5b6fd6"];
+const PIN = { urgent: "var(--u3)", soon: "var(--u2)", later: "var(--u1)" };
+
+/* ---------- тема ---------- */
+const THEMES = ["auto", "light", "dark"];
+let theme = "auto";
+try { theme = localStorage.getItem("theme") || "auto"; } catch (e) {}
+function applyTheme(t) {
+  if (t === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", t);
+  $("#theme").replaceChildren(icon(t === "dark" ? "moon" : t === "light" ? "sun" : "auto", 20));
+}
+applyTheme(theme);
+$("#theme").addEventListener("click", () => {
+  theme = THEMES[(THEMES.indexOf(theme) + 1) % 3];
+  try { localStorage.setItem("theme", theme); } catch (e) {}
+  applyTheme(theme);
+});
+
+/* ---------- состояние ---------- */
+let D = null, farmKey = null;
+const S = { day: null, sel: null, sort: "route", filter: "all" };
+const trips = () => D.plan;
+const byId = () => Object.fromEntries(D.orders.map((o) => [o.id, o]));
+
+// где заказ едет в выбранном режиме: рейс, остановка, дата
+function placement() {
+  const m = {};
+  trips().forEach((t, ti) => t.stops.forEach((s, si) => { m[s.order_id] = { trip: ti, stop: si + 1, date: t.date, of: t.stops.length, eta: s.eta, leg: s.leg_km }; }));
+  return m;
+}
+
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 2400); }
+const tipcard = $("#tipcard");
+function showTip(node, html) {
+  tipcard.replaceChildren(...html);
+  const r = node.getBoundingClientRect();
+  tipcard.style.left = Math.max(8, Math.min(innerWidth - 262, r.left + r.width / 2 - 125)) + "px";
+  tipcard.style.top = Math.max(8, r.top - tipcard.offsetHeight - 10) + "px";
+  tipcard.classList.add("show");
+}
+const hideTip = () => tipcard.classList.remove("show");
+
+/* ---------- карта ---------- */
+function drawMap() {
+  const { w, h } = D.map, f = D.farm, place = placement();
+  const svg = sv("svg", { class: "map", viewBox: `0 0 ${w} ${h}`, role: "group", "aria-label": "Схема района: точки заказов и маршруты" });
+  // фон: поля, река, дороги
+  [[6, 48, 20, 15], [28, 52, 16, 12], [60, 3, 18, 10], [8, 4, 16, 9], [88, 4, 10, 14], [70, 54, 22, 12]].forEach(([x, y, a, b]) => svg.append(sv("rect", { x, y, width: a, height: b, rx: 3, fill: "var(--land2)" })));
+  svg.append(sv("path", { d: `M0 ${h * .68} C 18 ${h * .6}, 30 ${h * .78}, 48 ${h * .7} S 78 ${h * .66}, 100 ${h * .74}`, fill: "none", stroke: "var(--water)", "stroke-width": 2.4, "stroke-linecap": "round" }));
+  D.map.districts.forEach((d) => {
+    svg.append(sv("path", { d: `M${f.x} ${f.y} Q ${(f.x + d.x) / 2 + 4} ${(f.y + d.y) / 2 - 3} ${d.x} ${d.y}`, fill: "none", stroke: "var(--roadline)", "stroke-width": 1.5, "stroke-linecap": "round" }));
+    svg.append(sv("path", { d: `M${f.x} ${f.y} Q ${(f.x + d.x) / 2 + 4} ${(f.y + d.y) / 2 - 3} ${d.x} ${d.y}`, fill: "none", stroke: "var(--road)", "stroke-width": .9, "stroke-linecap": "round" }));
+  });
+  D.map.districts.forEach((d) => {
+    svg.append(sv("circle", { cx: d.x, cy: d.y, r: d.r, fill: "var(--brand)", opacity: .08 }));
+    svg.append(sv("text", { class: "dname", x: d.x, y: d.y - d.r - .8 }, d.name));
+  });
+  // маршруты
+  trips().forEach((t, ti) => {
+    if (S.day && t.date !== S.day) return;
+    const color = COLORS[ti % COLORS.length], pts = [[f.x, f.y], ...t.stops.map((s) => [s.x, s.y]), [f.x, f.y]];
+    svg.append(sv("polyline", { points: pts.map((p) => p.join(",")).join(" "), fill: "none", stroke: color, "stroke-width": S.day ? .9 : .55,
+      "stroke-linejoin": "round", "stroke-linecap": "round", opacity: S.day ? .95 : .7 }));
+  });
+  // заказы
+  const byo = byId();
+  D.orders.forEach((o) => {
+    const p = place[o.id], dim = (S.day && p.date !== S.day) || (S.sel && S.sel !== o.id && false);
+    const label = byRoute() ? p.stop : o.rank;
+    const g = sv("g", { class: "pin" + (dim ? " dim" : ""), tabindex: 0, role: "button", "data-id": o.id,
+      "aria-label": `${o.id}, ${o.customer}, ${o.district}, ${o.priority_label}, ${rub(o.sum)}` });
+    if (S.sel === o.id) g.append(sv("circle", { class: "halo", cx: o.x, cy: o.y, r: 3.9 }));
+    if (o.perishable) g.append(sv("circle", { cx: o.x, cy: o.y, r: 3.15, fill: "none", stroke: "var(--ink2)", "stroke-width": .4, "stroke-dasharray": ".9 .7" }));
+    g.append(sv("circle", { class: "b", cx: o.x, cy: o.y, r: 2.5, fill: PIN[o.priority], style: byRoute() ? `stroke:${COLORS[p.trip % COLORS.length]};stroke-width:.8` : "" }), sv("text", { x: o.x, y: o.y + .85 }, label));
+    g.addEventListener("click", () => select(o.id, true));
+    g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(o.id, true); } });
+    g.addEventListener("mouseenter", () => showTip(g, tipHtml(byo[o.id], p)));
+    g.addEventListener("mouseleave", hideTip);
+    g.addEventListener("focus", () => showTip(g, tipHtml(byo[o.id], p)));
+    g.addEventListener("blur", hideTip);
+    svg.append(g);
+  });
+  // ферма
+  svg.append(sv("g", { class: "farm" }, sv("circle", { cx: f.x, cy: f.y, r: 3.6, fill: "var(--brand-deep)", stroke: "var(--surface)", "stroke-width": .6 }),
+    sv("path", { d: `M${f.x - 1.7} ${f.y + .5} L${f.x} ${f.y - 1.5} L${f.x + 1.7} ${f.y + .5} V${f.y + 1.9} H${f.x - 1.7} Z`, fill: "#fff" }),
+    sv("text", { x: f.x, y: f.y + 6.8 }, "Ферма")));
+  return svg;
+}
+function tipHtml(o, p) {
+  return [el("b", {}, `${o.customer} · ${o.district}`), el("br"), o.items.join(", "), el("br"),
+    `${rub(o.sum)} · ${o.priority_label.toLowerCase()}`, el("br"), `Едет ${dayFmt(p.date)}, остановка ${p.stop} из ${p.of}`];
+}
+
+/* ---------- список ---------- */
+const byRoute = () => S.sort === "route" || !!S.day;  // по маршруту: группы по рейсам, номер = очередность остановки
+function visibleOrders() {
+  const place = placement();
+  let xs = D.orders.filter((o) => S.filter === "all" || o.priority === S.filter);
+  if (S.day) xs = xs.filter((o) => place[o.id].date === S.day);
+  if (byRoute()) return [...xs].sort((a, b) => place[a.id].trip - place[b.id].trip || place[a.id].stop - place[b.id].stop);
+  if (S.sort === "sum") return [...xs].sort((a, b) => b.sum - a.sum);
+  return xs;
+}
+function whenLine(o, p) {
+  const wish = o.flex ? `${dayFmt(o.wish, { day: "numeric", month: "short" })} – ${dayFmt(o.deadline, { day: "numeric", month: "short" })}` : dayFmt(o.wish);
+  const ride = byRoute() ? [el("span", {}, "Приедем около ", el("b", {}, p.eta), p.stop > 1 ? ` · ${p.leg} км от прошлой точки` : ` · ${p.leg} км от фермы`)]
+    : [el("span", {}, "Везём: ", el("b", {}, dayFmt(p.date)), ` · ${p.stop}-я точка`)];
+  return [el("span", {}, "Просит: ", el("b", {}, wish)), ...ride];
+}
+function orderRow(o, p) {
+  const route = byRoute();
+  return el("div", { class: "row" + (S.sel === o.id ? " sel" : ""), id: "r-" + o.id, tabindex: 0, role: "button", onclick: () => select(o.id, false),
+    onkeydown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(o.id, false); } } },
+    el("div", { class: "rank " + o.priority, title: route ? "Очередность остановки в рейсе" : "Место по срочности" }, route ? p.stop : o.rank),
+    el("div", {}, el("h3", {}, `${o.customer} · ${o.district}`, el("span", { class: "chip " + o.priority }, el("span", { class: "dot" }), o.priority_label),
+        o.perishable ? el("span", { class: "chip warn", title: "Есть скоропортящийся товар" }, "скоропорт") : null),
+      el("div", { class: "items" }, o.items.join(", ")), el("div", { class: "when" }, whenLine(o, p))),
+    el("div", { class: "sum" }, rub(o.sum)));
+}
+function drawList() {
+  const place = placement(), box = $("#list"), xs = visibleOrders(), all = trips();
+  if (!xs.length) return box.replaceChildren(el("div", { class: "empty" }, "Нет заказов по этому фильтру"));
+  const out = [];
+  let last = -1;
+  xs.forEach((o) => {
+    const p = place[o.id];
+    if (byRoute() && p.trip !== last) {
+      last = p.trip;
+      const t = all[p.trip], n = all.filter((x) => x.date === t.date), nth = n.indexOf(t) + 1;
+      out.push(el("div", { class: "grp", style: `--tc:${COLORS[p.trip % COLORS.length]}` },
+        el("span", { class: "gt" }, el("i"), cap(dayFmt(t.date, { weekday: "long", day: "numeric", month: "long" })) + (n.length > 1 ? ` · рейс ${nth}` : ""),
+          p.trip === 0 ? el("span", { class: "chip shift" }, "ближайший") : null),
+        el("span", { class: "fine" }, `выезд 10:00 → дома ≈ ${t.back} · ${t.km} км · ${t.stops.length} ${plural(t.stops.length, "точка", "точки", "точек")}`)));
+    }
+    out.push(orderRow(o, p));
+  });
+  box.replaceChildren(...out);
+}
+function select(id, scroll) {
+  const p = placement()[id];
+  if (S.day && p.date !== S.day) S.day = p.date;
+  S.sel = S.sel === id && !scroll ? null : id;
+  redraw();
+  if (scroll && S.sel) { const r = $("#r-" + id); if (r) r.scrollIntoView({ block: "nearest", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }
+}
+
+/* ---------- рейсы ---------- */
+function driverText(t) {
+  const o = byId(), d = dayFmt(t.date, { weekday: "long", day: "numeric", month: "long" });
+  return [`Рейс ${d}. Выезд 10:00, возвращение около ${t.back}. ${t.km} км, ${t.stops.length} ${plural(t.stops.length, "остановка", "остановки", "остановок")}.`,
+    ...t.stops.map((s, i) => `${i + 1}. ${s.eta} · ${o[s.order_id].customer}, ${s.district}: ${o[s.order_id].items.join(", ")} (${rub(s.sum)})`)].join("\n");
+}
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); toast("Маршрут скопирован"); }
+  catch (e) {
+    const ta = el("textarea", { style: "position:fixed;opacity:0" }); ta.value = text; document.body.append(ta); ta.select();
+    try { document.execCommand("copy"); toast("Маршрут скопирован"); } catch (e2) { toast("Не получилось скопировать"); }
+    ta.remove();
+  }
+}
+function tripCard(t, ti, all) {
+  const same = all.filter((x) => x.date === t.date), nth = same.indexOf(t) + 1;
+  return el("article", { class: "panel trip", style: `--tc:${COLORS[ti % COLORS.length]}` },
+    el("h3", {}, el("span", {}, dayFmt(t.date, { weekday: "long", day: "numeric", month: "long" }) + (same.length > 1 ? ` · рейс ${nth}` : "")), el("span", { class: "fine" }, rub(t.sum))),
+    el("div", { class: "meta" }, `${t.districts.join(", ")}`),
+    el("ol", {}, t.stops.map((s) => { const o = byId()[s.order_id]; return el("li", {}, el("span", { class: "eta" }, s.eta), el("span", {}, o.customer, el("small", {}, o.items.join(", "))), el("span", { class: "fine" }, `${s.leg_km} км`)); })),
+    el("footer", {}, el("span", {}, el("b", {}, `${t.km} км`), ` · ${hm(t.minutes)}`), el("button", { class: "btn small", onclick: () => copyText(driverText(t)) }, icon("copy", 15), "Для водителя")));
+}
+function drawTrips() {
+  const s = D.summary, b = s.plan, box = $("#tripbox");
+  const cmp = el("div", { class: "cmp" },
+    el("div", { class: "panel cmpc win" }, el("h3", {}, "План на неделю"), el("div", { class: "big" }, `${b.km} км`), el("div", { class: "fine" }, `${b.days} ${plural(b.days, "день", "дня", "дней")} в дороге · ${hm(b.minutes)} · около ${rub(b.cost)}`)),
+    el("div", { class: "panel cmpc" }, el("h3", {}, "Экономия"), el("div", { class: "big" }, `−${s.saved_km} км`),
+      el("div", { class: "fine" }, `Экономия около ${rub(s.saved_cost)} и ${hm(Math.max(0, s.saved_minutes))} за рулём. Сдвинуто заказов: ${s.shifted} (покупатели готовы подождать). Доставка забирает ${s.share_plan}% выручки вместо ${s.share_as_is}%. Сравнение с развозкой в тот день, на который просят каждый заказ.`)));
+  const all = trips();
+  box.replaceChildren(cmp, el("div", { class: "trips" }, all.filter((t) => !S.day || t.date === S.day).map((t) => tripCard(t, all.indexOf(t), all))));
+}
+
+/* ---------- сборка страницы ---------- */
+function redraw() {
+  const mapBox = $("#mapbox");
+  mapBox.replaceChildren(drawMap());
+  drawDays(); drawList(); drawTrips(); drawSeg();
+}
+function drawSeg() {
+  for (const b of document.querySelectorAll("[data-sort]")) b.setAttribute("aria-pressed", String(b.dataset.sort === S.sort));
+  for (const b of document.querySelectorAll("[data-filter]")) b.setAttribute("aria-pressed", String(b.dataset.filter === S.filter));
+}
+function drawDays() {
+  const all = trips(), dates = [...new Set(all.map((t) => t.date))];
+  $("#days").replaceChildren(el("button", { class: "dchip", "aria-pressed": String(!S.day), onclick: () => { S.day = null; redraw(); } }, "Все дни"),
+    ...dates.map((d) => { const i = all.findIndex((t) => t.date === d), n = all.filter((t) => t.date === d).reduce((m, t) => m + t.stops.length, 0);
+      return el("button", { class: "dchip", "aria-pressed": String(S.day === d), onclick: () => { S.day = S.day === d ? null : d; redraw(); } },
+        el("i", { style: `background:${COLORS[i % COLORS.length]}` }), `${dayFmt(d)} · ${n}`); }));
+}
+
+function build() {
+  const s = D.summary, app = $("#app");
+  const counts = { all: D.orders.length, urgent: 0, soon: 0, later: 0 };
+  D.orders.forEach((o) => { counts[o.priority]++; });
+  app.replaceChildren(
+    el("section", { class: "hero" },
+      el("div", {}, el("span", { class: "tag" }, icon("truck", 15), "Дополнительная функция · демо-заказы"),
+        el("h1", {}, "Доставка на неделю"),
+        el("p", {}, `${s.orders} ${plural(s.orders, "заказ ждёт", "заказа ждут", "заказов ждут")} доставки на ${rub(s.sum)}. Помощник собрал их в рейсы так, чтобы вы ездили реже и не нарушили сроки.`)),
+      el("div", { class: "kpis" },
+        el("div", { class: "kpi" }, el("div", { class: "v" }, `−${s.saved_km} км`), el("div", { class: "k" }, "меньше пути за неделю")),
+        el("div", { class: "kpi" }, el("div", { class: "v" }, rub(s.saved_cost)), el("div", { class: "k" }, "экономия на топливе и износе")),
+        el("div", { class: "kpi" }, el("div", { class: "v" }, hm(Math.max(0, s.saved_minutes))), el("div", { class: "k" }, "меньше за рулём")),
+        el("div", { class: "kpi" }, el("div", { class: "v" }, s.urgent), el("div", { class: "k" }, `${plural(s.urgent, "срочный заказ", "срочных заказа", "срочных заказов")} · везём первыми`)))),
+    el("div", { class: "grid" },
+      el("section", { class: "panel mapcard", "aria-label": "Карта" },
+        el("div", { class: "tools" },
+          el("span", { class: "fine" }, "Нажмите точку, чтобы увидеть заказ")),
+        el("div", { class: "days", id: "days" }),
+        el("div", { id: "mapbox" }),
+        el("div", { class: "legend" },
+          el("span", {}, el("i", { style: "background:var(--u3)" }), "срочно"), el("span", {}, el("i", { style: "background:var(--u2)" }), "на этой неделе"),
+          el("span", {}, el("i", { style: "background:var(--u1)" }), "можно позже"), el("span", {}, el("i", { class: "per" }), "скоропортящееся"))),
+      el("section", { class: "panel list", "aria-label": "Заказы" },
+        el("div", { class: "lhead" }, el("h2", {}, "Заказы"),
+          el("div", { class: "seg", role: "group", "aria-label": "Сортировка" },
+            ...[["route", "По маршруту"], ["rank", "По срочности"], ["sum", "По сумме"]].map(([k, t]) => el("button", { "data-sort": k, "aria-pressed": String(k === S.sort), onclick: () => { S.sort = k; redraw(); } }, t)))),
+        el("div", { class: "filters" },
+          ...[["all", "Все"], ["urgent", "Срочно"], ["soon", "На этой неделе"], ["later", "Можно позже"]].map(([k, t]) =>
+            el("button", { class: "dchip", "data-filter": k, "aria-pressed": String(k === S.filter), onclick: () => { S.filter = k; redraw(); } }, `${t} · ${counts[k]}`))),
+        el("div", { id: "list" }))),
+    el("section", { class: "sec" }, el("h2", {}, "Рейсы по дням"),
+      el("p", {}, "Покупатели из одного района, которые готовы подождать, едут одним рейсом. Срочные и скоропортящиеся заказы не откладываются. Дату в заказе помощник сам не меняет: перенос согласуете вы."),
+      el("div", { id: "tripbox" })),
+    el("section", { class: "sec" },
+      el("div", { class: "panel note" }, el("h3", {}, "Почему появилась эта вкладка"),
+        el("p", {}, "После кастдев-интервью я узнал, что основные проблемы у фермеров возникают с доставкой: людям нужна скорость как у курьерских сервисов, а возит фермер сам. Поэтому я решил добавить эту вкладку."),
+        el("blockquote", {}, "«Фермер, он не курьер, хотя разводит свою продукцию сам»"),
+        el("p", { class: "fine" }, "Из интервью с экспертом фермерской торговой площадки. Это гипотеза, её нужно проверить на фермерах."))),
+    el("p", { class: "fine foot" }, D.assumptions));
+  redraw();
+}
+
+/* ---------- инструкция ---------- */
+const TOUR = [
+  { ico: "truck", title: "Зачем здесь доставка", text: "После кастдев-интервью я узнал, что основные проблемы у фермеров возникают с доставкой. Поэтому к трём делам на день я добавил отдельную вкладку: она собирает заказы на карте и помогает возить реже.",
+    demo: () => [el("span", { class: "chip plain" }, "Из интервью"), el("i", { class: "fine" }, "«Фермер, он не курьер, хотя разводит свою продукцию сам»")] },
+  { ico: "pin", title: "Заказы на карте и в списке", text: "Слева точки заказов, справа список от самого срочного. Цвет точки показывает срочность, пунктир вокруг означает скоропортящийся товар. Нажмите точку или строку, и они подсветятся вместе.",
+    demo: () => [el("span", { class: "chip urgent" }, el("span", { class: "dot" }), "Срочно"), el("span", { class: "chip soon" }, el("span", { class: "dot" }), "На этой неделе"), el("span", { class: "chip later" }, el("span", { class: "dot" }), "Можно позже")] },
+  { ico: "route", title: "Рейсы вместо поездок по одному", text: "Заказы одного района, где покупатель готов подождать пару дней, едут вместе. Внизу страницы видно, сколько километров и рублей это экономит по сравнению с развозкой в день, на который просят каждый заказ.",
+    demo: () => [el("span", { class: "fine", style: "margin:0" }, "Просит 30 окт – 1 нояб, приедем 31 окт"), el("b", { style: "color:var(--brand)" }, "−70 км")] },
+  { ico: "shield", title: "Решаете вы", text: "Эта страница ничего не отправляет покупателям и не меняет заказы. Кнопка «Для водителя» копирует маршрут текстом. Перенос дат с покупателями в пилоте будет идти только с вашего подтверждения.",
+    demo: () => [el("span", { class: "btn small" }, icon("copy", 15), "Для водителя"), el("span", { class: "fine" }, "заказы в демо синтетические")] },
+];
+const tourKey = "delivery_tour_v1";
+function openTour(i) { $("#tour").hidden = false; renderTour(i); }
+function closeTour(done) { $("#tour").hidden = true; if (done) { try { localStorage.setItem(tourKey, "1"); } catch (e) {} } }
+function renderTour(i) {
+  const t = TOUR[i], last = i === TOUR.length - 1;
+  $("#tour").replaceChildren(el("div", { class: "tourcard" },
+    el("div", { class: "fine" }, `Как работает доставка · ${i + 1} из ${TOUR.length}`), el("div", { class: "ico", style: "margin-top:10px" }, icon(t.ico, 28)),
+    el("h2", {}, t.title), el("p", {}, t.text), el("div", { class: "tdemo", "aria-hidden": "true" }, t.demo()),
+    el("div", { class: "tdots" }, TOUR.map((_, k) => el("i", { class: k <= i ? "on" : "" }))),
+    el("div", { class: "tnav" }, i > 0 ? el("button", { class: "btn", onclick: () => renderTour(i - 1) }, "Назад") : null, el("span", { class: "sp" }),
+      last ? null : el("button", { class: "btn ghost", onclick: () => closeTour(true) }, "Пропустить"),
+      el("button", { class: "btn primary", id: "tnext", onclick: () => (last ? closeTour(true) : renderTour(i + 1)) }, last ? "Понятно" : "Дальше", icon("arrow", 17)))));
+  $("#tnext").focus();
+}
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#tour").hidden) closeTour(true); });
+
+/* ---------- запуск ---------- */
+$("#back").append(icon("back", 17), "Три дела");
+$("#brand").append(icon("truck", 22), "Доставка");
+$("#helpBtn").append(icon("help", 20)); $("#helpBtn").addEventListener("click", () => openTour(0));
+
+(async () => {
+  try {
+    if (window.__boot) await window.__boot;
+    const { farms } = await api("/farms");
+    let key = new URLSearchParams(location.search).get("farm");
+    if (!farms.some((f) => f.key === key)) { const prof = await api("/profile"); key = farms.some((f) => f.key === prof.active) ? prof.active : farms[0].key; }
+    farmKey = key;
+    $("#back").href = "./";
+    D = await api(`/farms/${key}/delivery`);
+    $("#farmName").textContent = D.farm.name;
+    build();
+    let seen = false;
+    try { seen = !!localStorage.getItem(tourKey); } catch (e) {}
+    if (!seen) openTour(0);
+  } catch (e) {
+    if (e.code === "unauthorized") { location.href = "./"; return; }
+    $("#app").replaceChildren(el("div", { class: "panel", style: "padding:24px" }, el("h2", {}, "Не получилось загрузить доставку"), el("p", { class: "fine", style: "margin-top:8px" }, e.message), el("a", { class: "btn", href: "./", style: "margin-top:14px" }, "Вернуться к трём делам")));
+  }
+})();
+</script>
+</body>
+</html>

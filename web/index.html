@@ -1,0 +1,1215 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Три дела на сегодня</title>
+<style>
+:root {
+  --font: ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --bg: #f2f5ee; --surface: #ffffff; --surface2: #f7f9f4; --ink: #14231a; --ink2: #44534a; --muted: #77857c; --line: #e0e7db;
+  --bar: rgba(242,245,238,.82);
+  --brand: #1f7a3e; --brand-ink: #ffffff; --brand-soft: #e3f1e7; --brand-deep: #0d4727; --sun: #f2b134;
+  --u3: #c4452b; --u3-soft: #fbe8e3; --u2: #9a6200; --u2-soft: #fbefd3; --u1: #2563a8; --u1-soft: #e2edf8;
+  --good: #0ca30c; --good-text: #006300; --good-soft: #e1f3df; --warn: #fab219; --warn-text: #8a5a00; --warn-soft: #fcefd0;
+  --crit: #d03b3b; --crit-soft: #fae4e4;
+  --shadow: 0 1px 2px rgba(20,35,26,.05), 0 10px 30px -12px rgba(20,35,26,.14);
+  --shadow-lg: 0 2px 4px rgba(20,35,26,.06), 0 18px 40px -14px rgba(20,35,26,.22);
+  --hero: linear-gradient(140deg, #0d4727 0%, #1b6e39 58%, #2b9a52 100%);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b120e; --surface: #15201a; --surface2: #1a2820; --ink: #eaf2ec; --ink2: #bccabf; --muted: #8a998f; --line: #25342b;
+    --bar: rgba(11,18,14,.82);
+    --brand: #4fc27a; --brand-ink: #08150d; --brand-soft: #1c3326; --brand-deep: #0b2e1a;
+    --u3: #f08a70; --u3-soft: #3a211b; --u2: #e8b955; --u2-soft: #35291a; --u1: #86b9dc; --u1-soft: #1d2d3a;
+    --good-text: #0ca30c; --good-soft: #17301a; --warn-text: #fab219; --warn-soft: #33290f; --crit-soft: #3a1c1c;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -12px rgba(0,0,0,.5); --shadow-lg: 0 2px 4px rgba(0,0,0,.45), 0 18px 40px -14px rgba(0,0,0,.6);
+    --hero: linear-gradient(140deg, #0a2f1a 0%, #124d29 58%, #1c7a41 100%);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b120e; --surface: #15201a; --surface2: #1a2820; --ink: #eaf2ec; --ink2: #bccabf; --muted: #8a998f; --line: #25342b;
+  --bar: rgba(11,18,14,.82);
+  --brand: #4fc27a; --brand-ink: #08150d; --brand-soft: #1c3326; --brand-deep: #0b2e1a;
+  --u3: #f08a70; --u3-soft: #3a211b; --u2: #e8b955; --u2-soft: #35291a; --u1: #86b9dc; --u1-soft: #1d2d3a;
+  --good-text: #0ca30c; --good-soft: #17301a; --warn-text: #fab219; --warn-soft: #33290f; --crit-soft: #3a1c1c;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -12px rgba(0,0,0,.5); --shadow-lg: 0 2px 4px rgba(0,0,0,.45), 0 18px 40px -14px rgba(0,0,0,.6);
+  --hero: linear-gradient(140deg, #0a2f1a 0%, #124d29 58%, #1c7a41 100%);
+}
+* { box-sizing: border-box; }
+html { color-scheme: light dark; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 var(--font); -webkit-font-smoothing: antialiased; }
+svg { flex: none; }
+h1, h2, h3, h4, p { margin: 0; }
+button, select, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+/* ---------- каркас ---------- */
+.topbar { position: sticky; top: 0; z-index: 8; background: var(--bar); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+.topin { max-width: 1180px; margin: 0 auto; padding: 10px 20px; display: flex; align-items: center; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.01em; }
+.sp { flex: 1; }
+.pill { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px 8px 4px 16px; max-width: 52vw; }
+.pill select { appearance: none; -webkit-appearance: none; background: transparent; border: 0; padding: 6px 22px 6px 0; font-weight: 600; max-width: 100%; text-overflow: ellipsis; cursor: pointer; color: var(--ink); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2377857c' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 2px center; }
+.pill select option { color: #14231a; background: #fff; }
+.iconbtn { width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); display: grid; place-items: center; color: var(--ink2); }
+.iconbtn:hover { background: var(--brand-soft); color: var(--brand); }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 22px 20px 120px; }
+.layout { display: grid; gap: 18px; grid-template-columns: minmax(0, 1fr); }
+.side { display: contents; }
+#hero { order: 1; } .main { order: 2; min-width: 0; } #results, #rewind { order: 3; } #ai { order: 4; }
+@media (min-width: 1020px) {
+  .layout { grid-template-columns: 380px minmax(0, 1fr); gap: 26px; align-items: start; }
+  .side { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 78px; }
+  #hero, #results, #rewind, #ai { order: 0; }
+  .main { order: 0; }
+}
+
+/* ---------- шапка-сводка ---------- */
+.hero { position: relative; overflow: hidden; border-radius: 26px; padding: 24px; color: #fff; background: var(--hero); box-shadow: var(--shadow-lg); }
+.hero::before { content: ""; position: absolute; inset: 0; opacity: .16; pointer-events: none;
+  background: repeating-linear-gradient(115deg, transparent 0 22px, rgba(255,255,255,.55) 22px 23px); mask-image: radial-gradient(circle at 100% 0%, #000, transparent 70%); -webkit-mask-image: radial-gradient(circle at 100% 0%, #000, transparent 70%); }
+.hero::after { content: ""; position: absolute; width: 190px; height: 190px; right: -50px; top: -60px; border-radius: 50%; background: radial-gradient(circle, rgba(242,177,52,.55), transparent 68%); pointer-events: none; }
+.hero > * { position: relative; z-index: 1; }
+.hero .kick { font-size: 13px; opacity: .82; font-weight: 600; letter-spacing: .02em; }
+.hero h1 { font-size: clamp(24px, 4.2vw, 30px); line-height: 1.15; letter-spacing: -.02em; margin: 6px 0 18px; font-weight: 800; text-wrap: balance; }
+.heroRow { display: flex; align-items: center; gap: 18px; }
+.ring { position: relative; width: 92px; height: 92px; flex: none; }
+.ring svg { transform: rotate(-90deg); }
+.ring .track { stroke: rgba(255,255,255,.2); } .ring .fill { stroke: var(--sun); transition: stroke-dasharray .7s cubic-bezier(.2,.8,.2,1); }
+.ring b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 20px; font-weight: 800; }
+.big { font-size: clamp(38px, 8vw, 48px); line-height: 1; font-weight: 800; letter-spacing: -.035em; white-space: nowrap; }
+.heroLbl { font-size: 14px; opacity: .85; margin-top: 4px; }
+.chips2 { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.chip2 { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.18); border-radius: 999px; padding: 5px 12px; font-size: 13px; font-weight: 600; }
+.heroNote { margin-top: 14px; padding: 10px 14px; border-radius: 14px; background: rgba(255,255,255,.14); font-size: 14px; }
+.resTotal { display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap; font-size: 15px; margin: 4px 0 8px; }
+.resTotal b { font-size: 28px; letter-spacing: -.02em; } .resTotal b.pos { color: var(--brand); } .resTotal b.neg { color: var(--u3); }
+.resRow { padding: 10px 0; border-top: 1px solid var(--line); }
+.resTop { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+.resName { font-weight: 600; font-size: 14.5px; }
+.resBar { height: 6px; border-radius: 99px; background: var(--brand-soft); margin-top: 8px; overflow: hidden; }
+.resBar i { display: block; height: 100%; background: var(--brand); border-radius: 99px; }
+.chip.plain { background: var(--surface2); color: var(--ink2); border: 1px solid var(--line); font-weight: 600; } .chip.warn { background: var(--warn-soft); color: var(--warn-text); }
+.lastweek { margin-top: 14px; padding: 12px 14px; border-radius: 14px; background: rgba(0,0,0,.2); font-size: 14px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.lastweek button { background: rgba(255,255,255,.18); border: 0; color: #fff; border-radius: 999px; padding: 5px 12px; font-weight: 700; min-height: 0; }
+.lastweek button:hover { background: rgba(255,255,255,.3); }
+
+/* ---------- боковые панели ---------- */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 18px 20px; box-shadow: var(--shadow); }
+.panel h3 { font-size: 17px; letter-spacing: -.01em; display: flex; align-items: center; gap: 8px; }
+.panel h3 svg { color: var(--brand); }
+.panel p { color: var(--ink2); font-size: 14.5px; margin-top: 6px; }
+.days { display: flex; gap: 6px; margin: 14px 0; align-items: center; }
+.days i { flex: 1; height: 8px; border-radius: 99px; background: var(--brand-soft); }
+.days.on i { background: var(--brand); opacity: .35; } .days.on i:first-child { opacity: 1; }
+.rwbtn { width: 100%; justify-content: center; }
+.aiRow { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.stat3 { display: inline-flex; gap: 6px; align-items: center; border-radius: 999px; padding: 4px 10px; font-size: 13px; font-weight: 600; background: var(--brand-soft); color: var(--brand); }
+.stat3.bad { background: var(--warn-soft); color: var(--warn-text); }
+.aiRow2 { margin-top: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+.aiRow2 select { background: var(--surface2); border: 1px solid var(--line); border-radius: 10px; padding: 6px 8px; }
+
+/* ---------- кнопки и бейджи ---------- */
+.btn { display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); font-weight: 700; transition: transform .12s, box-shadow .2s, background .2s; }
+.btn:hover { background: var(--brand-soft); } .btn:active { transform: scale(.98); }
+.btn.primary { background: var(--brand); color: var(--brand-ink); border-color: transparent; box-shadow: 0 8px 18px -8px var(--brand); }
+.btn.primary:hover { filter: brightness(1.07); background: var(--brand); }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--ink2); font-weight: 600; }
+.btn.ghost:hover { background: var(--surface2); }
+a.btn { text-decoration: none; color: inherit; }
+.btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+.chip.u3 { background: var(--u3-soft); color: var(--u3); } .chip.u2 { background: var(--u2-soft); color: var(--u2); } .chip.u1 { background: var(--u1-soft); color: var(--u1); }
+.chip.type { background: var(--surface2); color: var(--ink2); border: 1px solid var(--line); font-weight: 600; }
+.chip.ok { background: var(--good-soft); color: var(--good-text); }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px; cursor: help; letter-spacing: 0; text-transform: none; }
+.badge.ai { background: var(--brand-soft); color: var(--brand); } .badge.tpl { background: var(--warn-soft); color: var(--warn-text); }
+
+/* ---------- карточки дел ---------- */
+.card { --accent: var(--brand); --accent-soft: var(--brand-soft); position: relative; overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 22px 24px; margin-bottom: 16px; box-shadow: var(--shadow); transition: box-shadow .25s, transform .25s, opacity .25s; animation: rise .55s cubic-bezier(.2,.8,.2,1) both; }
+.card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--accent); }
+.card:hover { box-shadow: var(--shadow-lg); }
+.card[data-u="3"] { --accent: var(--u3); --accent-soft: var(--u3-soft); } .card[data-u="2"] { --accent: var(--u2); --accent-soft: var(--u2-soft); } .card[data-u="1"] { --accent: var(--u1); --accent-soft: var(--u1-soft); }
+.card.done { --accent: var(--good); --accent-soft: var(--good-soft); border-color: color-mix(in srgb, var(--good) 40%, var(--line)); }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.chead { display: flex; gap: 14px; align-items: flex-start; }
+.ico { width: 46px; height: 46px; border-radius: 15px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); flex: none; }
+.cmeta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.rank { margin-left: auto; font-size: 13px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+.title { font-size: clamp(19px, 2.6vw, 22px); line-height: 1.25; letter-spacing: -.015em; font-weight: 800; margin-top: 8px; }
+.plain { margin-top: 14px; padding: 14px 16px; border-radius: 16px; background: var(--surface2); border: 1px solid var(--line); }
+.plain .lbl { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; flex-wrap: wrap; }
+.plain p { color: var(--ink); font-size: 15.5px; }
+.metrics { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 12px; margin-top: 16px; }
+.metric { padding: 12px 14px; border-radius: 16px; border: 1px solid var(--line); }
+.metric.fx { background: var(--brand-soft); border-color: transparent; }
+.metric .k { font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.metric .v { font-size: 26px; font-weight: 800; letter-spacing: -.02em; margin-top: 2px; line-height: 1.15; }
+.metric.fx .v { color: var(--brand); font-size: 30px; }
+.metric .s { font-size: 13px; color: var(--ink2); margin-top: 2px; }
+@media (max-width: 640px) { .metrics { grid-template-columns: 1fr 1fr; } .metric.fx { grid-column: 1 / -1; } }
+.range { position: relative; height: 8px; border-radius: 99px; background: color-mix(in srgb, var(--brand) 16%, transparent); margin: 12px 0 4px; }
+.range i { position: absolute; top: 0; bottom: 0; border-radius: 99px; background: var(--brand); opacity: .4; }
+.range em { position: absolute; top: -3px; width: 4px; height: 14px; border-radius: 2px; background: var(--brand); box-shadow: 0 0 0 2px var(--brand-soft); }
+.dots { display: inline-flex; gap: 4px; margin-top: 8px; }
+.dots i { width: 14px; height: 6px; border-radius: 99px; background: var(--line); } .dots i.on { background: var(--brand); }
+details.more { margin-top: 14px; }
+details.more summary { cursor: pointer; display: inline-flex; align-items: center; gap: 6px; color: var(--ink2); font-weight: 700; font-size: 14px; list-style: none; padding: 6px 0; }
+details.more summary::-webkit-details-marker { display: none; }
+details.more summary svg { transition: transform .2s; } details.more[open] summary svg { transform: rotate(90deg); }
+ul.why { margin: 6px 0 0; padding-left: 20px; } ul.why li { margin: 4px 0; }
+.fine { color: var(--muted); font-size: 13.5px; margin-top: 8px; }
+.track { display: flex; align-items: center; gap: 8px; margin: 12px 0 0; color: var(--muted); font-size: 13.5px; }
+.track svg { flex: none; }
+.actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+.mins { margin-left: auto; color: var(--muted); font-size: 14px; display: inline-flex; gap: 6px; align-items: center; }
+.menu { position: relative; }
+.menu ul { position: absolute; z-index: 5; bottom: 54px; left: 0; min-width: 240px; list-style: none; margin: 0; padding: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-lg); }
+.menu li button { width: 100%; text-align: left; border: 0; background: transparent; padding: 10px 12px; border-radius: 10px; min-height: 40px; }
+.menu li button:hover { background: var(--surface2); }
+.doneBox { margin-top: 14px; padding: 14px 16px; border-radius: 16px; background: var(--good-soft); color: var(--ink); }
+.doneBox small { display: block; color: var(--ink2); margin-top: 2px; }
+.pop { animation: pop .5s cubic-bezier(.2,1.4,.4,1) both; }
+@keyframes pop { from { transform: scale(.5); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* ---------- очередь, журнал ---------- */
+details.box { margin-top: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 4px 18px; }
+details.box summary { cursor: pointer; padding: 14px 0; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.qrow { display: flex; justify-content: space-between; gap: 14px; padding: 12px 0; border-top: 1px solid var(--line); } .qrow span { color: var(--brand); font-weight: 700; white-space: nowrap; }
+.foot { margin-top: 26px; color: var(--muted); font-size: 13.5px; max-width: 70ch; }
+.foot button { background: none; border: 0; text-decoration: underline; color: var(--muted); padding: 4px; }
+
+/* ---------- панель подтверждения ---------- */
+.scrim { position: fixed; inset: 0; background: rgba(5,12,8,.5); backdrop-filter: blur(2px); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 10; }
+.scrim.open { opacity: 1; pointer-events: auto; }
+.drawer { position: fixed; z-index: 11; right: 0; top: 0; bottom: 0; width: min(520px, 100%); background: var(--surface); box-shadow: var(--shadow-lg); transform: translateX(105%); transition: transform .3s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; }
+.drawer.open { transform: none; }
+.dhead { padding: 20px 22px 16px; border-bottom: 1px solid var(--line); display: flex; gap: 12px; justify-content: space-between; align-items: flex-start; }
+.dhead .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); }
+.dhead h2 { font-size: 20px; line-height: 1.25; letter-spacing: -.01em; margin-top: 4px; }
+.dbody { padding: 8px 22px 22px; overflow: auto; flex: 1; }
+.dfoot { padding: 14px 22px calc(16px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); display: flex; gap: 10px; flex-wrap: wrap; background: var(--surface); }
+.dfoot .primary { flex: 1; justify-content: center; }
+.sec { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 18px 0 8px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.diff { display: grid; gap: 10px; }
+.diffrow { padding: 12px 14px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface2); }
+.diffrow .what { font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.diffrow .ba { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+.diffrow .before { color: var(--muted); } .diffrow .after { font-weight: 800; color: var(--brand); font-size: 17px; }
+.seg { display: flex; gap: 8px; flex-wrap: wrap; }
+.segbtn { min-height: 42px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); font-weight: 700; }
+.segbtn.on { background: var(--brand); color: var(--brand-ink); border-color: transparent; }
+.safe { display: flex; gap: 10px; align-items: flex-start; margin: 18px 0 0; padding: 14px 16px; border-radius: 16px; background: var(--brand-soft); color: var(--ink2); font-size: 14px; }
+.safe svg { color: var(--brand); margin-top: 1px; }
+.hash { font: 12px/1.4 ui-monospace, "SF Mono", Menlo, monospace; color: var(--muted); margin-top: 6px; }
+.ack { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0; padding: 14px 16px; border-radius: 16px; background: var(--u3-soft); color: var(--ink); }
+.ack input { width: 22px; height: 22px; margin-top: 2px; accent-color: var(--u3); flex: none; }
+.err { margin: 12px 0; padding: 12px 14px; border-radius: 14px; background: var(--crit-soft); color: var(--crit); font-weight: 600; }
+.draftbox { border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; background: var(--surface2); } .draftbox p { margin: 6px 0 12px; white-space: pre-wrap; }
+
+/* ---------- отчёт ---------- */
+.sheet { position: fixed; inset: 0; z-index: 12; background: var(--bg); overflow: auto; transform: translateY(102%); transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+.sheet.open { transform: none; }
+.sheet .in { max-width: 820px; margin: 0 auto; padding: 18px 20px 70px; }
+.sheet h2 { font-size: clamp(26px, 5vw, 34px); letter-spacing: -.025em; margin: 10px 0 18px; font-weight: 800; }
+.vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: stretch; }
+.vsBox { border-radius: 22px; padding: 18px 20px; background: var(--surface); border: 1px solid var(--line); }
+.vsBox.fact { background: var(--hero); color: #fff; border: 0; box-shadow: var(--shadow-lg); }
+.vsBox .k { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; opacity: .75; }
+.vsBox .big { font-size: clamp(32px, 7vw, 48px); margin-top: 6px; }
+.vsBox .delta { display: inline-flex; gap: 6px; align-items: center; margin-top: 10px; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,.18); font-weight: 700; font-size: 14px; }
+.vsArrow { align-self: center; color: var(--muted); }
+@media (max-width: 640px) { .vs { grid-template-columns: 1fr; } .vsArrow { transform: rotate(90deg); justify-self: center; } }
+.meter { height: 8px; border-radius: 99px; background: var(--brand-soft); overflow: hidden; margin-top: 12px; } .meter i { display: block; height: 100%; background: var(--brand); border-radius: 99px; }
+.rowcard { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px 18px; margin: 12px 0; box-shadow: var(--shadow); }
+.rowcard h4 { margin: 10px 0 4px; font-size: 17px; line-height: 1.3; letter-spacing: -.01em; }
+.vchip { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 800; padding: 4px 11px 4px 8px; border-radius: 999px; }
+.vchip.in_range, .vchip.above { background: var(--good-soft); color: var(--good-text); } .vchip.below { background: var(--warn-soft); color: var(--warn-text); } .vchip.not_worked { background: var(--crit-soft); color: var(--crit); }
+.fvf { position: relative; height: 12px; border-radius: 99px; background: color-mix(in srgb, var(--muted) 18%, transparent); margin: 28px 6px 8px; }
+.fvf .band { position: absolute; top: 0; bottom: 0; background: var(--brand); opacity: .35; border-radius: 99px; }
+.fvf .mid { position: absolute; top: -4px; width: 3px; height: 20px; background: var(--brand); border-radius: 2px; margin-left: -1px; }
+.fvf .fact { position: absolute; top: -3px; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; border: 2px solid var(--surface); background: var(--muted); box-shadow: 0 2px 6px rgba(0,0,0,.25); }
+.fvf .fact.in_range, .fvf .fact.above { background: var(--good); } .fvf .fact.below { background: var(--warn); } .fvf .fact.not_worked { background: var(--crit); }
+.fvf .lab { position: absolute; top: -26px; font-size: 12px; font-weight: 700; color: var(--ink2); transform: translateX(-50%); white-space: nowrap; }
+.axis { display: flex; justify-content: space-between; margin: 0 6px; font-size: 12px; color: var(--muted); }
+.nums { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 14px; color: var(--ink2); margin-top: 8px; } .nums b { color: var(--ink); }
+.learn { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--surface2); font-size: 14px; color: var(--ink2); display: flex; gap: 8px; align-items: flex-start; } .learn svg { color: var(--brand); margin-top: 2px; }
+.wk { display: grid; gap: 10px; margin-top: 4px; }
+.wkrow { display: grid; grid-template-columns: 150px 1fr; gap: 10px; align-items: center; font-size: 14px; }
+.wkbar { height: 16px; border-radius: 0 6px 6px 0; position: relative; min-width: 2px; } .wkbar span { position: absolute; left: calc(100% + 8px); top: -2px; font-weight: 700; white-space: nowrap; }
+.wkbar.a { background: var(--brand); } .wkbar.b { background: color-mix(in srgb, var(--muted) 45%, transparent); }
+@media (max-width: 520px) { .wkrow { grid-template-columns: 1fr; gap: 4px; } }
+.tip { position: fixed; z-index: 40; pointer-events: none; background: var(--ink); color: var(--bg); padding: 8px 11px; border-radius: 10px; font-size: 13px; max-width: 260px; opacity: 0; transition: opacity .12s; box-shadow: var(--shadow-lg); }
+.tip.show { opacity: 1; }
+
+/* ---------- перемотка ---------- */
+.spin { position: fixed; inset: 0; z-index: 30; display: none; place-items: center; background: rgba(5,12,8,.62); backdrop-filter: blur(3px); }
+.spin.show { display: grid; }
+.spin > div { background: var(--surface); padding: 28px 36px; border-radius: 24px; text-align: center; box-shadow: var(--shadow-lg); min-width: 260px; }
+.spin .dd { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; } .spin .dd i { width: 14px; height: 14px; border-radius: 50%; background: var(--line); transition: background .2s, transform .2s; } .spin .dd i.on { background: var(--brand); transform: scale(1.25); }
+.spin b { display: block; font-size: 44px; letter-spacing: -.03em; color: var(--brand); font-variant-numeric: tabular-nums; }
+
+/* ---------- чат ---------- */
+.fab { position: fixed; right: 18px; bottom: 18px; z-index: 9; box-shadow: var(--shadow-lg); border-radius: 999px; min-height: 52px; padding: 0 20px; }
+.chat { position: fixed; z-index: 13; right: 18px; bottom: 18px; width: min(420px, calc(100% - 36px)); height: min(660px, 84vh); background: var(--surface); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow-lg); display: flex; flex-direction: column; transform: translateY(125%); transition: transform .3s cubic-bezier(.2,.8,.2,1); overflow: hidden; }
+.chat.open { transform: none; }
+.chat .ch { padding: 14px 16px; display: flex; gap: 12px; align-items: center; background: var(--hero); color: #fff; }
+.chat .av { width: 40px; height: 40px; border-radius: 13px; background: rgba(255,255,255,.18); display: grid; place-items: center; }
+.chat .ch b { display: block; font-size: 16px; } .chat .ch small { opacity: .8; font-size: 12.5px; }
+.chat .ch button { margin-left: auto; background: rgba(255,255,255,.16); border: 0; color: #fff; width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; }
+.chatlog { flex: 1; overflow: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; background: var(--surface2); }
+.msg { max-width: 88%; padding: 11px 14px; border-radius: 18px; white-space: pre-wrap; font-size: 15px; line-height: 1.45; animation: rise .3s both; }
+.msg.me { align-self: flex-end; background: var(--brand); color: var(--brand-ink); border-bottom-right-radius: 6px; }
+.msg.bot { align-self: flex-start; background: var(--surface); border: 1px solid var(--line); border-bottom-left-radius: 6px; }
+.msg .apply { margin-top: 10px; display: flex; min-height: 42px; }
+.typing { display: inline-flex; gap: 4px; padding: 4px 2px; } .typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: blink 1s infinite; } .typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+#chips { padding: 0 14px 10px; display: flex; gap: 8px; flex-wrap: wrap; background: var(--surface2); }
+.qchip { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 7px 13px; font-size: 14px; font-weight: 600; } .qchip:hover { background: var(--brand-soft); color: var(--brand); }
+#chatform { display: flex; gap: 8px; padding: 12px 14px calc(14px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--surface); }
+#chatform input { flex: 1; min-width: 0; background: var(--surface2); border: 1px solid var(--line); border-radius: 14px; padding: 0 14px; min-height: 46px; }
+@media (max-width: 520px) { .chat { right: 0; bottom: 0; width: 100%; height: 90vh; border-radius: 24px 24px 0 0; } }
+
+.toast { position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%) translateY(20px); background: var(--ink); color: var(--bg); padding: 12px 18px; border-radius: 14px; opacity: 0; transition: .25s; z-index: 50; max-width: calc(100% - 32px); font-weight: 600; box-shadow: var(--shadow-lg); }
+.toast.show { opacity: 1; transform: translateX(-50%); }
+.sk { background: linear-gradient(90deg, var(--line), var(--surface2), var(--line)); background-size: 200% 100%; animation: sh 1.3s infinite; border-radius: 22px; }
+@keyframes sh { to { background-position: -200% 0; } }
+@media (max-width: 640px) { .drawer { top: auto; height: 90vh; width: 100%; border-radius: 24px 24px 0 0; transform: translateY(105%); } .drawer.open { transform: none; } .mins { margin-left: 0; width: 100%; } .card { padding: 18px 18px 18px 20px; } .rank { display: none; } }
+
+/* ---------- знакомство и выбор данных ---------- */
+.onb { position: fixed; inset: 0; z-index: 60; overflow: auto; background: var(--bg); }
+.onb::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 300px; background: var(--hero); }
+.onbin { position: relative; max-width: 880px; margin: 0 auto; padding: 28px 20px 60px; }
+.onbhead { color: #fff; display: flex; align-items: flex-start; gap: 12px; margin-bottom: 18px; }
+.onbhead .kick { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; opacity: .8; }
+.onbhead h1 { font-size: clamp(26px, 5vw, 38px); letter-spacing: -.025em; line-height: 1.15; margin-top: 6px; font-weight: 800; }
+.onbcard { background: var(--surface); border: 1px solid var(--line); border-radius: 28px; padding: 26px; box-shadow: var(--shadow-lg); }
+.stepper { display: flex; gap: 8px; margin-bottom: 22px; } .stepper i { flex: 1; height: 6px; border-radius: 99px; background: var(--line); } .stepper i.on { background: var(--brand); }
+.field { display: grid; gap: 6px; margin-bottom: 16px; } .field label { font-weight: 700; font-size: 14px; }
+.field input { min-height: 50px; border: 1px solid var(--line); border-radius: 14px; padding: 0 14px; background: var(--surface2); }
+.field small { color: var(--muted); font-size: 13px; }
+.chipsel { display: flex; gap: 8px; flex-wrap: wrap; } .chipsel button { min-height: 42px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-weight: 600; }
+.chipsel button.on { background: var(--brand); color: var(--brand-ink); border-color: transparent; }
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; } @media (max-width: 680px) { .opts { grid-template-columns: 1fr; } }
+.opt { text-align: left; border: 2px solid var(--line); border-radius: 22px; padding: 22px; background: var(--surface); display: grid; gap: 8px; align-content: start; }
+.opt:hover, .opt:focus-visible { border-color: var(--brand); background: var(--brand-soft); }
+.opt .oico { width: 48px; height: 48px; border-radius: 15px; background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; }
+.opt h3 { font-size: 19px; letter-spacing: -.01em; } .opt p { color: var(--ink2); font-size: 14.5px; }
+.farmgrid { display: grid; gap: 12px; }
+.farmcard { border: 1px solid var(--line); border-radius: 20px; padding: 16px 18px; display: flex; gap: 14px; align-items: center; background: var(--surface2); flex-wrap: wrap; }
+.farmcard.rec { border-color: var(--brand); background: var(--brand-soft); }
+.farmcard .txt { flex: 1; min-width: 220px; } .farmcard h3 { font-size: 18px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; } .farmcard p { color: var(--ink2); font-size: 14.5px; margin-top: 4px; }
+.onbnav { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.slot { padding: 12px 14px; border: 1px dashed var(--muted); border-radius: 16px; margin-bottom: 10px; }
+.slot.ok { border-style: solid; border-color: var(--good); background: var(--good-soft); }
+.slotrow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.slotrow .nm { flex: 1; min-width: 170px; font-weight: 700; } .slotrow .nm small { display: block; font-weight: 500; color: var(--muted); }
+.slot input[type=file] { display: none; }
+.slot details { margin-top: 8px; font-size: 14px; color: var(--ink2); } .slot summary { cursor: pointer; font-weight: 600; }
+.cols { margin: 8px 0 0; padding-left: 18px; } .cols li { margin: 3px 0; }
+.rep { margin-top: 16px; padding: 14px 16px; border-radius: 16px; } .rep.ok { background: var(--good-soft); } .rep.bad { background: var(--crit-soft); } .rep.warn { background: var(--warn-soft); margin-top: 8px; }
+.rep ul { margin: 6px 0 0; padding-left: 18px; } .rep li { margin: 3px 0; }
+.rep b.bd { color: var(--crit); }
+.note2 { color: var(--muted); font-size: 13.5px; margin-top: 14px; display: flex; gap: 8px; align-items: flex-start; } .note2 svg { color: var(--brand); margin-top: 2px; }
+
+/* ---------- вход в кабинет и инструкция ---------- */
+#auth { z-index: 65; }
+.tabs2 { display: flex; gap: 6px; background: var(--surface2); padding: 5px; border-radius: 16px; margin-bottom: 20px; }
+.tabs2 button { flex: 1; min-height: 44px; border: 0; background: transparent; border-radius: 12px; font-weight: 700; color: var(--ink2); }
+.tabs2 button.on { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+.pw { position: relative; } .pw input { width: 100%; padding-right: 52px; }
+.pw button { position: absolute; right: 6px; top: 6px; width: 38px; height: 38px; border: 0; background: transparent; border-radius: 10px; color: var(--muted); display: grid; place-items: center; }
+.pw button:hover { background: var(--brand-soft); color: var(--brand); }
+.authbox { max-width: 520px; margin: 0 auto; }
+.tourwrap { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; background: rgba(5,12,8,.6); backdrop-filter: blur(3px); padding: 16px; }
+.tourcard { width: min(560px, 100%); background: var(--surface); border-radius: 28px; padding: 26px; box-shadow: var(--shadow-lg); animation: rise .35s both; }
+.tourcard .ico { width: 56px; height: 56px; border-radius: 18px; background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; }
+.tourcard h2 { font-size: 24px; letter-spacing: -.02em; margin: 14px 0 8px; }
+.tourcard p { color: var(--ink2); }
+.tdemo { margin: 16px 0 4px; padding: 14px; border-radius: 18px; background: var(--surface2); border: 1px solid var(--line); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.tdemo .btn { min-height: 40px; pointer-events: none; }
+.tdots { display: flex; gap: 6px; margin: 18px 0 0; } .tdots i { height: 6px; flex: 1; border-radius: 99px; background: var(--line); } .tdots i.on { background: var(--brand); }
+.tnav { display: flex; gap: 8px; margin-top: 18px; align-items: center; } .tnav .sp { flex: 1; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topin">
+  <div class="brand"><span>Помощник роста</span></div>
+  <div class="sp"></div>
+  <label class="pill"><select id="farm" aria-label="Ферма (демо)"></select></label>
+  <a class="btn ghost" id="deliveryBtn" href="delivery.html" title="Заказы на карте и рейсы"></a>
+  <button class="iconbtn" id="helpBtn" aria-label="Как это работает" title="Как это работает"></button>
+  <button class="btn ghost" id="profileBtn" hidden title="Профиль и выбор предприятия"></button>
+  <button class="iconbtn" id="logoutBtn" hidden aria-label="Выйти из кабинета"></button>
+  <button class="iconbtn" id="theme" aria-label="Сменить тему" title="Тема"></button>
+</div></header>
+
+<div class="wrap">
+  <div class="layout">
+    <div class="side">
+      <section class="hero" id="hero"></section>
+      <section class="panel" id="results" hidden></section>
+      <section class="panel" id="rewind" hidden></section>
+      <section class="panel" id="ai" hidden></section>
+    </div>
+    <main class="main">
+      <div id="cards"><div class="sk" style="height:300px;margin-bottom:16px"></div><div class="sk" style="height:300px;margin-bottom:16px"></div><div class="sk" style="height:300px"></div></div>
+      <details class="box" id="queue" hidden></details>
+      <p class="foot">Демо на синтетических данных. Помощник ничего не меняет сам: изменение применяется только после вашего «Подтвердить» по одноразовому подтверждению, и почти всё можно откатить. <button id="reset">Сбросить демо</button> <button id="resetProfile">Сбросить профиль</button></p>
+    </main>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle" aria-hidden="true"></aside>
+<div class="spin" id="spin" role="status" aria-live="polite"><div><div class="dd" id="spinDots"></div>Прокручиваю неделю…<b id="spinDay">день 1</b></div></div>
+<section class="sheet" id="report" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Итоги недели"></section>
+<button class="btn primary fab" id="chatfab" aria-haspopup="dialog"></button>
+<aside class="chat" id="chat" role="dialog" aria-label="Чат с помощником" aria-hidden="true">
+  <div class="ch"><span class="av" id="chatAv"></span><div><b>Спросить помощника</b><small>Отвечаю по вашим данным. Сам ничего не меняю.</small></div><button id="chatClose" aria-label="Закрыть чат"></button></div>
+  <div class="chatlog" id="chatlog" aria-live="polite"></div>
+  <div id="chips"></div>
+  <form id="chatform"><input id="chatin" maxlength="500" placeholder="Например: а если скидка 15%?" autocomplete="off" aria-label="Ваш вопрос"><button class="btn primary" aria-label="Отправить"></button></form>
+</aside>
+<section class="onb" id="auth" role="dialog" aria-modal="true" aria-label="Вход в кабинет" hidden></section>
+<div class="tourwrap" id="tour" role="dialog" aria-modal="true" aria-label="Как это работает" hidden></div>
+<section class="onb" id="onb" role="dialog" aria-modal="true" aria-label="Знакомство" hidden></section>
+<div class="tip" id="tip" role="tooltip"></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const NS = "http://www.w3.org/2000/svg";
+const ICONS = {
+  hourglass: '<path d="M6 3h12M6 21h12M7 3c0 5 5 6 5 9s-5 4-5 9M17 3c0 5-5 6-5 9s5 4 5 9"/>',
+  box: '<path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5 12 12l9-4.5M12 12v9"/>',
+  image: '<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5-5-8 8"/>',
+  users: '<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17 14.2c2.4.3 4 2.3 4 4.8"/>',
+  tag: '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="8" cy="8.5" r="1.4"/>',
+  leaf: '<path d="M5 19c0-8 5-14 15-14 0 10-6 15-14 15"/><path d="M5 19c3-5 6-8 10-10"/>',
+  percent: '<path d="m5 19 14-14"/><circle cx="7" cy="7" r="2.2"/><circle cx="17" cy="17" r="2.2"/>',
+  link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  list: '<path d="m4 7 2 2 3-3M4 17l2 2 3-3M12 8h8M12 18h8"/>',
+  check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  shield: '<path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6z"/><path d="m9 12 2.2 2.2L15 10"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  undo: '<path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>',
+  x: '<path d="M6 6l12 12M18 6 6 18"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/>',
+  moon: '<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/>',
+  auto: '<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>',
+  chat: '<path d="M4 5h16v11H9l-5 4z"/>',
+  spark: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  up: '<path d="M12 19V5M6 11l6-6 6 6"/>',
+  down: '<path d="M12 5v14M6 13l6 6 6-6"/>',
+  forward: '<path d="M5 5l7 7-7 7M13 5l7 7-7 7"/>',
+  chevron: '<path d="m9 6 6 6-6 6"/>',
+  send: '<path d="M4 12 20 4l-4 16-4-6z"/><path d="m12 14 8-10"/>',
+  field: '<path d="M3 20h18M5 20c0-6 2-9 7-14 5 5 7 8 7 14M12 6v14"/>',
+  rewind: '<path d="M19 5l-7 7 7 7M11 5l-7 7 7 7"/>',
+  logout: '<path d="M10 4H5v16h5M15 8l5 4-5 4M20 12H9"/>',
+  help: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/>',
+  eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  mail: '<path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>',
+  upload: '<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>',
+  download: '<path d="M12 4v12M7 11l5 5 5-5M4 20h16"/>',
+  file: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/>',
+  warn: '<path d="M12 4 2.5 20h19z"/><path d="M12 10v5M12 18h.01"/>',
+  truck: '<path d="M3 6h11v10H3zM14 9h4l3 3v4h-7z"/><circle cx="7.5" cy="18" r="1.8"/><circle cx="17.5" cy="18" r="1.8"/>',
+  trend: '<path d="M3 17l6-6 4 4 7-8"/><path d="M15 7h5v5"/>',
+};
+function icon(name, size = 20, sw = 1.9) {
+  const s = document.createElementNS(NS, "svg");
+  s.setAttribute("viewBox", "0 0 24 24"); s.setAttribute("width", size); s.setAttribute("height", size);
+  s.setAttribute("fill", "none"); s.setAttribute("stroke", "currentColor"); s.setAttribute("stroke-width", sw);
+  s.setAttribute("stroke-linecap", "round"); s.setAttribute("stroke-linejoin", "round"); s.setAttribute("aria-hidden", "true");
+  s.innerHTML = ICONS[name] || "";
+  return s;
+}
+const TYPE_ICON = { spoilage: "hourglass", stockout: "box", leaky_card: "image", churn: "users", price_off: "tag", seasonal: "leaf", promo_loss: "percent", bundle: "link", hygiene: "list", glut: "truck", margin: "trend" };
+const fmtRub = (n) => (Math.round(n / 100) * 100).toLocaleString("ru-RU").replace(/ /g, " ") + " ₽";
+const sign = (n) => (n < 0 ? "−" : "+") + fmtRub(Math.abs(n));
+const compact = (n) => (n >= 1000 ? (n / 1000).toFixed(n % 1000 < 50 ? 0 : 1).replace(".", ",") + " тыс." : String(Math.round(n)));
+const short = (iso) => new Date(iso + "T00:00:00").toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+const time = (iso) => new Date(iso).toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+const plural = (n, f) => { const a = n % 10, b = n % 100; return a === 1 && b !== 11 ? f[0] : a >= 2 && a <= 4 && (b < 12 || b > 14) ? f[1] : f[2]; };
+const URG = { 3: "Срочно", 2: "На этой неделе", 1: "Без спешки" };
+const REASONS = [["no_stock", "Нет товара"], ["no_discounts", "Не хочу скидок"], ["already_done", "Уже сделал(а)"], ["bad_data", "Данные неверные"]];
+const VERDICT = { in_range: ["check", "В прогнозе"], above: ["up", "Выше прогноза"], below: ["down", "Ниже прогноза"], not_worked: ["x", "Не сработало"] };
+
+function el(tag, props, ...kids) {
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(props || {})) {
+    if (k === "class") node.className = v;
+    else if (k.startsWith("on")) node.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) node.setAttribute(k, v === true ? "" : v);
+  }
+  for (const kid of kids.flat()) if (kid != null && kid !== false) node.append(kid.nodeType ? kid : document.createTextNode(kid));
+  return node;
+}
+async function api(path, body) {
+  if (window.__localApi) return window.__localApi(path, body);  // автономная версия: движок работает в браузере
+  const res = await fetch("/api" + path, body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const data = await res.json();
+  if (!res.ok) {
+    if (data.error.code === "unauthorized" && authRequired) { account = null; showAuth("login"); }
+    throw Object.assign(new Error(data.error.message), { code: data.error.code, info: data.error });
+  }
+  return data;
+}
+let authRequired = false, account = null;
+
+/* ---------- тема ---------- */
+const THEMES = ["auto", "light", "dark"];
+function applyTheme(t) {
+  if (t === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", t);
+  $("#theme").replaceChildren(icon(t === "dark" ? "moon" : t === "light" ? "sun" : "auto", 20));
+  $("#theme").title = "Тема: " + { auto: "как в системе", light: "светлая", dark: "тёмная" }[t];
+}
+let theme = "auto";
+try { theme = localStorage.getItem("theme") || "auto"; } catch (e) {}
+applyTheme(theme);
+$("#theme").addEventListener("click", () => {
+  theme = THEMES[(THEMES.indexOf(theme) + 1) % 3];
+  try { localStorage.setItem("theme", theme); } catch (e) {}
+  applyTheme(theme);
+});
+
+/* ---------- данные ---------- */
+let current, view, chatHistory = [], lastEffect = 0;
+
+async function load(key = current) {
+  if (key !== current) { chatHistory = []; $("#chatlog").replaceChildren(); }
+  current = key;
+  $("#deliveryBtn").href = "delivery.html?farm=" + encodeURIComponent(key);
+  view = await api(`/farms/${key}/today`);
+  render();
+  loadAi();
+}
+
+function countUp(node, from, to) {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || from === to) { node.textContent = "+" + fmtRub(to); return; }
+  const t0 = performance.now(), dur = 700;
+  const step = (t) => {
+    const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+    node.textContent = "+" + fmtRub(from + (to - from) * e);
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+function render() {
+  const s = view.summary;
+  const date = new Date(view.date + "T00:00:00").toLocaleDateString("ru-RU", { weekday: "long", day: "numeric", month: "long" });
+  const R = 38, C = 2 * Math.PI * R, frac = s.total ? s.confirmed / s.total : 0;
+  const big = el("div", { class: "big" }, "+" + fmtRub(lastEffect));
+  const ringSvg = document.createElementNS(NS, "svg");
+  ringSvg.setAttribute("viewBox", "0 0 92 92"); ringSvg.setAttribute("width", 92); ringSvg.setAttribute("height", 92);
+  ringSvg.innerHTML = `<circle class="track" cx="46" cy="46" r="${R}" fill="none" stroke-width="9"/><circle class="fill" cx="46" cy="46" r="${R}" fill="none" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C * frac} ${C}"/>`;
+  $("#hero").replaceChildren(...[
+    el("div", { class: "kick" }, `${view.farm.name} · ${date}`),
+    el("h1", {}, s.total ? `Здравствуйте, ${view.farm.owner}! ${s.total} ${plural(s.total, ["дело", "дела", "дел"])} на сегодня` : `Здравствуйте, ${view.farm.owner}!`),
+    s.total ? el("div", { class: "heroRow" },
+      el("div", { class: "ring", role: "img", "aria-label": `Сделано ${s.confirmed} из ${s.total}` }, ringSvg, el("b", {}, `${s.confirmed}/${s.total}`)),
+      el("div", {}, big, el("div", { class: "heroLbl" }, "ожидаемый эффект за неделю"))) : null,
+    s.total ? el("div", { class: "chips2" },
+      s.minutes ? el("span", { class: "chip2" }, icon("clock", 15), `~${s.minutes} мин вашего времени`) : null,
+      el("span", { class: "chip2" }, icon("check", 15), `${s.confirmed} из ${s.total} сделано`)) : null,
+    s.note ? el("div", { class: "heroNote" }, s.note) : null,
+    view.last_report ? el("div", { class: "lastweek" }, icon("rewind", 16),
+      el("span", { style: "flex:1;min-width:150px" }, `Прошлая неделя: прогноз ${sign(view.last_report.forecast)} → факт ${sign(view.last_report.fact)}`),
+      el("button", { onclick: openLastReport }, "Отчёт")) : null,
+  ].filter(Boolean));
+  if (s.total) { countUp(big, lastEffect, s.effect); lastEffect = s.effect; }
+
+  drawResults(view.results);
+  const rw = $("#rewind");
+  rw.hidden = false;
+  rw.replaceChildren(
+    el("h3", {}, icon("forward", 20), "Что вышло из решений?"),
+    el("p", {}, view.can_rewind ? "В жизни результат будет известен через неделю. В демо время «перематывается»: симулятор разыгрывает следующие 7 дней и показывает, что получилось против прогноза помощника."
+      : "Подтвердите хотя бы одно дело. Затем можно «перемотать» время на 7 дней вперёд и увидеть, что из этого вышло."),
+    el("div", { class: "days" + (view.can_rewind ? " on" : "") }, [1, 2, 3, 4, 5, 6, 7].map(() => el("i"))),
+    el("button", { class: "btn primary rwbtn", disabled: !view.can_rewind, onclick: rewind }, icon("forward", 18), "Перемотать на 7 дней"),
+    el("button", { class: "btn rwbtn", style: "margin-top:8px", onclick: nextDay, title: "Только для теста: прокручивает один день без отчёта" }, icon("arrow", 18), "Следующий день (для теста)"),
+    el("p", { class: "fine" }, "Отчёт «прогноз против факта» измеряет дела текущего дня."));
+
+  const n = view.done.length + view.actions.length;
+  $("#cards").replaceChildren(
+    ...view.done.map((d, i) => doneCard(d, i + 1, n)),
+    ...view.actions.map((a, i) => card(a, view.done.length + i + 1, n, i)));
+  const q = $("#queue");
+  if (view.deferred.length) {
+    q.hidden = false;
+    q.replaceChildren(el("summary", {}, icon("list", 18), `Ещё в очереди: ${view.deferred.length}`),
+      ...view.deferred.map((a) => el("div", { class: "qrow" }, el("div", {}, a.title), el("span", {}, "+" + fmtRub(a.effect_mid)))));
+  } else q.hidden = true;
+}
+
+function card(a, rank, total, i) {
+  const span = Math.max(a.effect.high * 1.15, 1);
+  return el("article", { class: "card", id: "c-" + a.key, "data-u": a.urgency, style: `animation-delay:${i * 70}ms` },
+    el("div", { class: "chead" },
+      el("div", { class: "ico" }, icon(TYPE_ICON[a.type] || "spark", 24)),
+      el("div", { style: "flex:1;min-width:0" },
+        el("div", { class: "cmeta" }, el("span", { class: "chip u" + a.urgency }, el("span", { class: "dot" }), URG[a.urgency]), el("span", { class: "chip type" }, a.label),
+          el("span", { class: "rank" }, `Дело ${rank} из ${total}`)),
+        el("h3", { class: "title" }, a.title))),
+    el("div", { class: "plain" }, el("div", { class: "lbl" }, icon("spark", 14), "Простыми словами", badge(a.narration)), el("p", {}, a.narration.text)),
+    el("div", { class: "metrics" },
+      el("div", { class: "metric fx" }, el("div", { class: "k" }, "Эффект за 7 дней"), el("div", { class: "v" }, "+" + fmtRub(a.effect.mid)),
+        el("div", { class: "range", role: "img", "aria-label": "Диапазон эффекта" },
+          el("i", { style: `left:${a.effect.low / span * 100}%;width:${(a.effect.high - a.effect.low) / span * 100}%` }),
+          el("em", { style: `left:calc(${a.effect.mid / span * 100}% - 2px)` })),
+        el("div", { class: "s" }, `от ${fmtRub(a.effect.low)} до ${fmtRub(a.effect.high)}`)),
+      el("div", { class: "metric" }, el("div", { class: "k" }, "Ваше время"), el("div", { class: "v" }, `~${a.minutes} мин`), el("div", { class: "s" }, a.effect.note)),
+      el("div", { class: "metric" }, el("div", { class: "k" }, "Уверенность"), el("div", { class: "v", style: "font-size:20px;text-transform:capitalize" }, a.confidence.label),
+        el("div", { class: "dots", "aria-hidden": "true" }, [0, 1, 2].map((k) => el("i", { class: a.confidence.value >= [0.35, 0.55, 0.75][k] ? "on" : "" }))))),
+    trackLine(a.track),
+    el("details", { class: "more" },
+      el("summary", {}, icon("chevron", 16), "Почему так и как посчитано"),
+      el("ul", { class: "why" }, a.why.map((w) => el("li", {}, w))),
+      el("p", { class: "fine" }, `Уверенность: ${a.confidence.basis}.`)),
+    el("div", { class: "actions" },
+      el("button", { class: "btn primary", onclick: () => openDrawer(a) }, a.cta, icon("arrow", 18)),
+      el("button", { class: "btn ghost", onclick: () => dismiss(a, "later", "Отложил до завтра") }, "Не сейчас"),
+      notFit(a),
+      el("span", { class: "mins" }, icon("clock", 15), `~${a.minutes} мин`)));
+}
+
+function trackLine(t) {
+  if (!t) return document.createComment("");
+  const word = (n) => (n % 10 === 1 && n % 100 !== 11 ? "раз" : "раза");
+  const text = t.n
+    ? `Такие советы у вас проверяли ${t.n} ${word(t.n)}: факт в среднем ${t.avg_pct}% от прогноза, в коридор попало ${t.hit} из ${t.n}`
+    : "Такие советы у вас ещё не проверяли. Через неделю покажу, насколько точен прогноз";
+  return el("div", { class: "track", title: "Прогноз каждый раз сверяется с фактом и поправляется" }, icon("shield", 14), text);
+}
+
+const WHY_TPL = { disabled: "ИИ выключен", unavailable: "ИИ недоступен", circuit_open: "ИИ временно отключён после сбоев",
+  factcheck: "Текст ИИ отклонён: в нём были числа не из фактов", moderation: "Текст ИИ отклонён: запрещённые формулировки" };
+const SHORT_TPL = { unavailable: "ИИ недоступен", circuit_open: "ИИ на паузе", factcheck: "ИИ выдумал числа", moderation: "ИИ нарушил правила" };
+function badge(n) {
+  if (n.source === "llm") return el("span", { class: "badge ai", title: "Все числа, даты и названия сверены с расчётом движка" }, icon("shield", 13), `${n.provider === "demo" ? "демо-ИИ" : "ИИ"} · числа проверены`);
+  return el("span", { class: "badge tpl", title: WHY_TPL[n.reason] || "Шаблонный текст" }, "шаблон" + (SHORT_TPL[n.reason] ? " · " + SHORT_TPL[n.reason] : ""));
+}
+
+function doneCard(d, rank, total) {
+  return el("article", { class: "card done", id: "c-" + d.action_key },
+    el("div", { class: "chead" },
+      el("div", { class: "ico pop" }, icon("check", 26, 2.4)),
+      el("div", { style: "flex:1;min-width:0" },
+        el("div", { class: "cmeta" }, el("span", { class: "chip ok" }, "Выполнено"), el("span", { class: "chip type" }, d.type), el("span", { class: "rank" }, `Дело ${rank} из ${total}`)),
+        el("h3", { class: "title" }, d.summary))),
+    el("div", { class: "doneBox" }, `Подтверждено в ${time(d.executed_at)}. Проверю результат через 7 дней.`, el("small", {}, `Прогноз: +${fmtRub(d.effect_mid)} за неделю`)),
+    el("div", { class: "actions" },
+      d.reversible ? el("button", { class: "btn", onclick: () => rollback(d) }, icon("undo", 17), "Откатить")
+        : el("span", { class: "fine", style: "margin:0" }, "Откат невозможен: отправленное сообщение не вернуть")));
+}
+
+function notFit(a) {
+  const priceTypes = ["price_off", "margin"].includes(a.type);
+  const reasons = priceTypes ? [["premium_price", "Цена осознанная"], ...REASONS] : REASONS;
+  const list = el("ul", { hidden: true }, reasons.map(([code, text]) => el("li", {}, el("button", { onclick: () => dismiss(a, code,
+    code === "premium_price" ? "Учту: цена выбрана осознанно. Не буду предлагать её менять 60 дней." : `Учту: «${text}». Не покажу 14 дней.`) }, text))));
+  const btn = el("button", { class: "btn ghost", "aria-haspopup": "true", "aria-expanded": "false", onclick: (e) => {
+    e.stopPropagation(); list.hidden = !list.hidden; btn.setAttribute("aria-expanded", String(!list.hidden)); } }, "Не подходит", icon("chevron", 14));
+  return el("div", { class: "menu" }, btn, list);
+}
+
+async function guard(fn) {
+  try { return await fn(); } catch (e) { toast(e.message || "Не получилось"); if (["not_found", "changed"].includes(e.code)) load(); }
+}
+async function dismiss(a, reason, msg) {
+  await guard(async () => { await api(`/farms/${current}/dismiss`, { key: a.key, reason }); toast(msg); await load(); });
+}
+async function rollback(d) {
+  await guard(async () => { await api(`/farms/${current}/rollback`, { execution_id: d.id }); toast("Откатил: всё как было."); await load(); });
+}
+
+/* ---------- панель подтверждения ---------- */
+async function openDrawer(a, params) {
+  const d = $("#drawer");
+  d.replaceChildren(
+    el("div", { class: "dhead" }, el("div", {}, el("div", { class: "eyebrow" }, "Проверьте перед подтверждением"), el("h2", { id: "dtitle" }, a.title)),
+      el("button", { class: "iconbtn", "aria-label": "Закрыть", onclick: closeDrawer }, icon("x", 18))),
+    el("div", { class: "dbody" }, el("div", { class: "sk", style: "height:120px;margin-top:16px" }), el("div", { class: "sk", style: "height:120px;margin-top:12px" })));
+  d.classList.add("open"); d.setAttribute("aria-hidden", "false"); $("#scrim").classList.add("open");
+  let pv;
+  try { pv = await api(`/farms/${current}/preview`, { key: a.key, params }); }
+  catch (e) { d.querySelector(".dbody").replaceChildren(el("div", { class: "err" }, e.message)); if (e.code === "not_found") load(); return; }
+
+  const ack = pv.reversible ? null : el("input", { type: "checkbox", id: "ack" });
+  const err = el("div", { class: "err", hidden: true });
+  const go = el("button", { class: "btn primary", disabled: !pv.reversible, onclick: () => confirmAction(a, pv, go, err, params) },
+    icon("shield", 18), pv.reversible ? "Подтвердить" : `Отправить ${pv.recipients} клиентам`);
+  if (ack) ack.addEventListener("change", () => { go.disabled = !ack.checked; });
+  d.replaceChildren(
+    el("div", { class: "dhead" }, el("div", {}, el("div", { class: "eyebrow" }, "Проверьте перед подтверждением"), el("h2", { id: "dtitle" }, pv.title)),
+      el("button", { class: "iconbtn", "aria-label": "Закрыть", onclick: closeDrawer }, icon("x", 18))),
+    el("div", { class: "dbody" },
+      el("div", { class: "sec" }, "Что изменится"),
+      el("div", { class: "diff" }, pv.preview.map((p) => el("div", { class: "diffrow" }, el("div", { class: "what" }, p.what),
+        el("div", { class: "ba" }, el("span", { class: "before" }, p.before), icon("arrow", 16), el("span", { class: "after" }, p.after))))),
+      pv.adjustable ? [el("div", { class: "sec" }, "Размер скидки"), el("div", { class: "seg" }, pv.adjustable.options.map((o) =>
+        el("button", { class: "segbtn" + (Math.abs(o - pv.adjustable.value) < 1e-9 ? " on" : ""), "aria-pressed": String(Math.abs(o - pv.adjustable.value) < 1e-9),
+          onclick: () => openDrawer(a, { discount: o }) }, Math.round(o * 100) + "%")))] : null,
+      pv.draft ? draftBox(pv.draft) : null,
+      pv.reversible ? null : el("label", { class: "ack", for: "ack" }, ack, el("span", {}, `${pv.irreversible_note} Получателей: ${pv.recipients}. Я прочитал(а) текст и согласен(на) отправить.`)),
+      el("div", { class: "safe" }, icon("shield", 20), el("div", {}, "Помощник ничего не меняет сам. ", pv.reversible ? "Изменение можно будет откатить." : "Это действие нельзя отменить.",
+        el("div", { class: "hash" }, `Подтверждение одноразовое, действует ${pv.ttl_minutes} мин и подходит только к этому изменению · ${pv.change_hash.slice(0, 8)}`))),
+      err),
+    el("div", { class: "dfoot" }, go, el("button", { class: "btn", onclick: closeDrawer }, "Отмена")));
+  (ack || go).focus();
+}
+
+function draftBox(d) {
+  const ai = d.source === "llm";
+  const copy = el("button", { class: "btn", onclick: async () => { try { await navigator.clipboard.writeText(d.description); toast("Скопировано"); } catch { toast("Выделите текст и скопируйте вручную"); } } }, "Копировать");
+  return [
+    el("div", { class: "sec" }, "Черновик описания",
+      el("span", { class: "badge " + (ai ? "ai" : "tpl"), title: ai ? "Прошёл проверку: нет выдуманных цифр и запрещённых обещаний" : "Заготовка с полями для заполнения" }, ai ? "ИИ · проверен" : "шаблон")),
+    d.description ? el("div", { class: "draftbox" }, el("b", {}, d.title), el("p", {}, d.description), copy) : null,
+    d.checklist && d.checklist.length ? el("ul", { class: "why" }, d.checklist.map((c) => el("li", {}, c))) : null,
+    el("p", { class: "fine" }, "Поля в [скобках] заполните сами: помощник не знает вкус, состав и вес вашего товара."),
+  ];
+}
+
+async function confirmAction(a, pv, go, err, params) {
+  go.disabled = true; err.hidden = true;
+  try {
+    const { token } = await api(`/farms/${current}/confirm`, { key: a.key, change_hash: pv.change_hash, second_confirmation: !pv.reversible, params });
+    await api(`/farms/${current}/execute`, { key: a.key, token, params });
+    closeDrawer(); toast("Готово. Проверю результат через 7 дней."); await load();
+  } catch (e) {
+    err.textContent = e.message; err.hidden = false; go.disabled = false;
+    if (e.code === "changed") setTimeout(() => { closeDrawer(); load(); }, 1500);
+  }
+}
+function closeDrawer() { $("#drawer").classList.remove("open"); $("#drawer").setAttribute("aria-hidden", "true"); $("#scrim").classList.remove("open"); }
+
+/* ---------- перемотка и отчёт ---------- */
+async function rewind() {
+  const spin = $("#spin"), day = $("#spinDay"), dots = $("#spinDots");
+  dots.replaceChildren(...[1, 2, 3, 4, 5, 6, 7].map(() => el("i")));
+  spin.classList.add("show");
+  let d = 1; day.textContent = "день 1"; dots.children[0].classList.add("on");
+  const tick = setInterval(() => { d = Math.min(7, d + 1); day.textContent = "день " + d; dots.children[d - 1].classList.add("on"); }, 200);
+  try {
+    const [res] = await Promise.all([api(`/farms/${current}/rewind`, {}), new Promise((r) => setTimeout(r, 1550))]);
+    showReport(res.report);
+  } catch (e) { toast(e.message || "Не получилось"); }
+  finally { clearInterval(tick); spin.classList.remove("show"); }
+}
+async function nextDay() {
+  await guard(async () => {
+    const r = await api(`/farms/${current}/nextday`, {});
+    toast("Перешли на " + new Date(r.date + "T00:00:00").toLocaleDateString("ru-RU", { day: "numeric", month: "long" }));
+    dayChanged(r.date);
+    await load();
+  });
+}
+function dayChanged(iso) {
+  lastEffect = 0;
+  if (chatHistory.length) chatAdd("bot", "Начался новый день: " + new Date(iso + "T00:00:00").toLocaleDateString("ru-RU", { day: "numeric", month: "long" }) + ". Спрашивайте про сегодняшние дела.");
+}
+
+async function openLastReport() { try { showReport((await api(`/farms/${current}/report`)).report); } catch (e) { toast(e.message); } }
+
+function learning(a) {
+  const l = a.learning, pct = Math.round((a.ratio || 0) * 100);
+  const change = l.scale_after < 0.97 ? "уменьшил" : l.scale_after > 1.03 ? "увеличил" : "почти не менял";
+  return `Результат — ${pct}% от прогноза. Прогнозы типа «${a.type}» ${change} (×${String(l.scale_after).replace(".", ",")}) по ${l.checks} ${plural(l.checks, ["проверке", "проверкам", "проверкам"])}.`;
+}
+
+function barRow(label, value, max, cls, text) {
+  return el("div", { class: "wkrow" }, el("span", {}, label), el("div", { style: "padding-right:110px" }, el("div", { class: "wkbar " + cls, style: `width:${Math.max(1, value / max * 100)}%` }, el("span", {}, text))));
+}
+
+function showReport(r) {
+  const t = r.totals, w = r.week, sheet = $("#report");
+  const delta = t.fact - t.forecast;
+  const rows = r.actions.map((a) => {
+    const max = Math.max(a.forecast.high, a.fact, 1) * 1.1, pos = (v) => Math.max(0, Math.min(100, v / max * 100));
+    const [ic, label] = VERDICT[a.verdict];
+    const tipText = `Прогноз ${sign(a.forecast.mid)} (${fmtRub(a.forecast.low)} — ${fmtRub(a.forecast.high)}). Факт ${sign(a.fact)}.`;
+    return el("article", { class: "rowcard" },
+      el("div", { style: "display:flex;gap:8px;align-items:center;flex-wrap:wrap" }, el("span", { class: "vchip " + a.verdict }, icon(ic, 15, 2.6), label), el("span", { class: "chip type" }, a.type)),
+      el("h4", {}, a.title),
+      el("div", { class: "fvf", role: "img", "aria-label": tipText, "data-tip": tipText, tabindex: "0" },
+        el("i", { class: "band", style: `left:${pos(a.forecast.low)}%;width:${pos(a.forecast.high) - pos(a.forecast.low)}%` }),
+        el("i", { class: "mid", style: `left:${pos(a.forecast.mid)}%` }),
+        el("i", { class: "fact " + a.verdict, style: `left:${pos(a.fact)}%` }),
+        el("span", { class: "lab", style: `left:${Math.min(88, Math.max(12, pos(a.fact)))}%` }, "факт " + sign(a.fact))),
+      el("div", { class: "axis" }, el("span", {}, "0"), el("span", {}, compact(max) + " ₽")),
+      el("div", { class: "nums" }, el("span", {}, "Прогноз ", el("b", {}, sign(a.forecast.mid)), ` · диапазон ${fmtRub(a.forecast.low)} — ${fmtRub(a.forecast.high)}`)),
+      a.details.length ? el("ul", { class: "why", style: "margin-top:10px" }, a.details.map((x) => el("li", {}, x))) : null,
+      el("div", { class: "learn" }, icon("spark", 16), learning(a)));
+  });
+  const maxRev = Math.max(w.revenue_with, w.revenue_without, 1), maxW = Math.max(w.writeoff_with, w.writeoff_without, 1);
+  sheet.replaceChildren(el("div", { class: "in" },
+    el("button", { class: "btn ghost", onclick: closeReport }, icon("x", 16), "Закрыть"),
+    el("h2", {}, `Итоги недели ${short(r.period.from)} — ${short(r.period.to)}`),
+    el("div", { class: "vs" },
+      el("div", { class: "vsBox" }, el("div", { class: "k" }, "Прогноз помощника"), el("div", { class: "big" }, sign(t.forecast)), el("div", { class: "fine" }, `${t.count} ${plural(t.count, ["дело", "дела", "дел"])}`)),
+      el("div", { class: "vsArrow" }, icon("arrow", 28)),
+      el("div", { class: "vsBox fact" }, el("div", { class: "k" }, "Что получилось"), el("div", { class: "big" }, sign(t.fact)),
+        el("div", { class: "delta" }, icon(delta >= 0 ? "up" : "down", 15, 2.6), `${sign(delta)} к прогнозу`))),
+    el("div", { class: "panel", style: "margin-top:14px" },
+      el("div", { style: "display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap" }, el("b", {}, `Точность прогноза: ${t.accuracy == null ? "—" : Math.round(t.accuracy * 100) + "%"}`),
+        el("span", { class: "fine", style: "margin:0" }, `В диапазон попало ${t.in_range} из ${t.count}`)),
+      el("div", { class: "meter" }, el("i", { style: `width:${Math.round((t.accuracy || 0) * 100)}%` })),
+      el("p", {}, "Диапазон — честная неопределённость: на небольшой ферме одна неделя сильно «шумит».")),
+    el("div", { class: "sec", style: "margin-top:22px" }, "По каждому делу"),
+    ...rows,
+    el("div", { class: "sec", style: "margin-top:22px" }, "Неделя целиком"),
+    el("div", { class: "rowcard" }, el("div", { class: "wk" },
+      barRow("С вашими решениями", w.revenue_with, maxRev, "a", fmtRub(w.revenue_with)),
+      barRow("Без них", w.revenue_without, maxRev, "b", fmtRub(w.revenue_without)),
+      w.writeoff_with !== w.writeoff_without ? [el("div", { class: "sec", style: "margin:10px 0 0" }, "Списания (чем меньше, тем лучше)"),
+        barRow("С вашими решениями", w.writeoff_with, maxW, "a", fmtRub(w.writeoff_with)), barRow("Без них", w.writeoff_without, maxW, "b", fmtRub(w.writeoff_without))] : null)),
+    el("p", { class: "fine", style: "margin-top:20px" }, "Это симулятор: прошедшую неделю «разыгрывает» модель спроса фермы со скрытыми параметрами, которых помощник не знает. В пилоте вместо него будут реальные продажи платформы, а замер, отчёт и калибровка останутся теми же."),
+    el("button", { class: "btn primary", style: "margin-top:18px", onclick: async () => { closeReport(); await load(); dayChanged(view.date); } }, "Начать новый день", icon("arrow", 18))));
+  sheet.classList.add("open"); sheet.setAttribute("aria-hidden", "false"); sheet.scrollTop = 0;
+}
+function closeReport() { $("#report").classList.remove("open"); $("#report").setAttribute("aria-hidden", "true"); }
+
+/* ---------- ИИ-панель и журнал ---------- */
+async function loadAi() {
+  const [q, llm] = await Promise.all([api("/quality"), api("/llm")]);
+  const box = $("#ai");
+  box.hidden = false;
+  if (!q.provider) { box.replaceChildren(el("h3", {}, icon("shield", 20), "ИИ выключен"), el("p", {}, "Тексты формируются по шаблонам.")); return; }
+  const chips = [el("span", { class: "stat3" }, icon("check", 14, 2.6), `принято ${q.accepted} из ${q.texts}`)];
+  if (q.rejected_numbers) chips.push(el("span", { class: "stat3 bad" }, `выдуманные числа: ${q.rejected_numbers}`));
+  if (q.rejected_claims) chips.push(el("span", { class: "stat3 bad" }, `запрещённые формулировки: ${q.rejected_claims}`));
+  if (q.unavailable) chips.push(el("span", { class: "stat3 bad" }, `ИИ недоступен: ${q.unavailable}`));
+  if (q.after_retry) chips.push(el("span", { class: "stat3" }, `исправлено со 2-й попытки: ${q.after_retry}`));
+  const kids = [el("h3", {}, icon("shield", 20), "Контроль качества ИИ-текстов"),
+    el("p", {}, "Каждое число и название в тексте ИИ сверяется с расчётом. Не прошло проверку — показываем шаблон."),
+    el("div", { class: "aiRow" }, q.texts ? chips : el("span", { class: "stat3" }, "пока нет текстов"))];
+  if (llm.demo) {
+    const sel = el("select", { "aria-label": "Режим демо-ИИ" }, llm.modes.map((m) => el("option", { value: m.key, selected: m.key === llm.mode }, m.label)));
+    sel.addEventListener("change", async () => { await api("/llm", { mode: sel.value }); toast("Режим демо-ИИ изменён"); await load(); });
+    kids.push(el("div", { class: "aiRow2" }, "Демо-ИИ (имитация модели):", sel));
+  }
+  box.replaceChildren(...kids);
+}
+
+const RES_STATUS = { wait: ["Запущено, итог появится завтра", "plain"], works: ["Уже приносит", "ok"], none: ["Рано судить", "plain"],
+  in_range: ["В прогнозе", "ok"], above: ["Выше прогноза", "ok"], below: ["Ниже прогноза", "warn"], not_worked: ["Не сработало", "warn"] };
+const dayWord = (n) => (n % 10 === 1 && n % 100 !== 11 ? "день" : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? "дня" : "дней");
+function drawResults(r) {
+  const box = $("#results");
+  if (!r || !r.items.length) { box.hidden = true; return; }
+  box.hidden = false;
+  box.replaceChildren(
+    el("h3", {}, icon("trend", 20), "Что принесли принятые дела"),
+    r.days ? el("div", { class: "resTotal" }, el("b", { class: r.total_fact >= 0 ? "pos" : r.days >= 7 ? "neg" : "" }, sign(r.total_fact)),
+      el("span", {}, ` за ${r.days} ${dayWord(r.days)}`), el("span", { class: "fine", style: "margin:0 0 0 auto" }, `прогноз на неделю ${sign(r.total_forecast)}`))
+      : el("p", { class: "fine", style: "margin-top:0" }, "Дело запущено. Нажмите «Следующий день» или «Перемотать на 7 дней», и здесь появится, сколько оно принесло."),
+    ...r.items.map((i) => {
+      const [label, tone] = RES_STATUS[i.status] || ["", "plain"];
+      const pct = i.forecast > 0 ? Math.max(0, Math.min(100, i.fact / i.forecast * 100)) : 0;
+      return el("div", { class: "resRow" },
+        el("div", { class: "resTop" }, el("span", { class: "resName" }, i.title), el("span", { class: "chip " + tone }, label)),
+        i.days ? el("div", { class: "resBar", role: "img", "aria-label": `Принесло ${sign(i.fact)} из прогноза ${sign(i.forecast)}` }, el("i", { style: `width:${pct}%` })) : null,
+        el("div", { class: "fine", style: "margin:2px 0 0" }, i.days ? `${sign(i.fact)} за ${i.days} ${dayWord(i.days)} из прогноза ${sign(i.forecast)} на неделю${i.days < 7 ? ` · день ${i.days} из 7` : ""}` : `Прогноз на неделю ${sign(i.forecast)}`));
+    }),
+    ...(r.days && r.days < 7 ? [el("p", { class: "fine" }, "Первые дни судить рано: скидка сначала снижает выручку, а выигрыш копится к концу недели.")] : []),
+    el("p", { class: "fine" }, "Эффект считается как разница с миром, где дело не запускали. В демо это симулятор, в жизни это будут ваши реальные продажи."));
+}
+
+/* ---------- чат ---------- */
+function chatOpen(open) {
+  const c = $("#chat");
+  c.classList.toggle("open", open); c.setAttribute("aria-hidden", String(!open));
+  $("#chatfab").hidden = open;
+  if (open) {
+    if (!chatHistory.length) chatAdd("bot", `Здравствуйте, ${view.farm.owner}! Спросите про любое дело: почему оно в списке, как посчитан эффект, что будет при другой скидке. Сам я ничего не меняю: изменения вы подтверждаете кнопкой.`);
+    renderChips(["Почему так?", "А если скидка 15%?", "Что ещё в очереди?"]);
+    setTimeout(() => $("#chatin").focus(), 280);
+  }
+}
+function renderChips(list) { $("#chips").replaceChildren(...list.map((t) => el("button", { class: "qchip", type: "button", onclick: () => chatSend(t) }, t))); }
+function chatAdd(who, text, apply) {
+  chatHistory.push({ who, text });
+  const m = el("div", { class: "msg " + who }, text);
+  if (apply) m.append(el("button", { class: "btn primary apply", onclick: async () => {
+    chatOpen(false);
+    await openDrawer({ key: apply.action_key, title: apply.title || apply.label }, Object.keys(apply.params || {}).length ? apply.params : undefined);
+  } }, apply.label, icon("arrow", 17)));
+  $("#chatlog").append(m); $("#chatlog").scrollTop = 1e9;
+}
+async function chatSend(text) {
+  text = text.trim();
+  if (!text) return;
+  chatAdd("me", text); $("#chatin").value = "";
+  const wait = el("div", { class: "msg bot" }, el("span", { class: "typing" }, el("i"), el("i"), el("i")));
+  $("#chatlog").append(wait); $("#chatlog").scrollTop = 1e9;
+  try {
+    const r = await api(`/farms/${current}/chat`, { text });
+    wait.remove();
+    chatAdd("bot", r.text, r.apply || (r.action_key ? { action_key: r.action_key, params: {}, label: "Открыть дело" } : null));
+    if (r.suggestions.length) renderChips(r.suggestions);
+  } catch (e) { wait.remove(); chatAdd("bot", e.message || "Не получилось, попробуйте ещё раз"); }
+}
+
+
+/* ---------- знакомство и выбор данных ---------- */
+const INTERESTS = ["Молочная продукция и сыры", "Мёд и пчеловодство", "Овощи и бахчевые", "Мясо", "Другое"];
+const INTEREST_FARM = { "Молочная продукция и сыры": "cheese", "Мёд и пчеловодство": "honey", "Овощи и бахчевые": "veg" };
+const FARM_INFO = {
+  cheese: { title: "Сыроварня «Зелёный луг»", text: "Сыры, творог, йогурт, мёд. Срочные дела: творог с коротким сроком, хит на исходе, убыточная акция, ушедшие клиенты." },
+  veg: { title: "Огород Петровых", text: "Овощи и зелень. Скоропорт (томаты), сезонный урожай брокколи, который не уйдёт в розницу, нет тыквы в сезон." },
+  honey: { title: "Пасека у реки", text: "Мёд и продукты пчеловодства. Цена выше рынка и просевшие продажи, гречишный мёд на исходе при росте спроса." },
+};
+let onb = { step: 1, source: null, profile: { owner: "", farm_name: "", region: "", interests: [] }, files: {}, names: {}, report: null, busy: false, templates: null, canClose: false };
+
+function savedProfile() { try { return JSON.parse(localStorage.getItem("profile") || "null"); } catch (e) { return null; } }
+function saveProfile() { try { localStorage.setItem("profile", JSON.stringify(onb.profile)); } catch (e) {} }
+
+function openOnboarding(step, canClose) {
+  const saved = savedProfile();
+  if (saved && !onb.profile.owner) Object.assign(onb.profile, saved);
+  Object.assign(onb, { step, canClose: !!canClose, report: null, busy: false });
+  $("#onb").hidden = false; document.body.style.overflow = "hidden";
+  renderOnb();
+}
+function closeOnboarding() { $("#onb").hidden = true; document.body.style.overflow = ""; }
+
+function renderOnb() {
+  const titles = { 1: "Давайте знакомиться", 2: "Откуда взять данные?", 3: onb.source === "upload" ? "Загрузите свои данные" : "Выберите предприятие" };
+  const body = onb.step === 1 ? stepOne() : onb.step === 2 ? stepTwo() : onb.source === "upload" ? stepUpload() : stepDemo();
+  $("#onb").replaceChildren(el("div", { class: "onbin" },
+    el("div", { class: "onbhead" }, el("div", {}, el("div", { class: "kick" }, `Помощник роста · шаг ${onb.step} из 3`), el("h1", {}, titles[onb.step])),
+      onb.canClose ? el("button", { class: "iconbtn", style: "margin-left:auto", "aria-label": "Закрыть", onclick: closeOnboarding }, icon("x", 18)) : null),
+    el("div", { class: "onbcard" }, el("div", { class: "stepper" }, [1, 2, 3].map((i) => el("i", { class: i <= onb.step ? "on" : "" })), ), body)));
+}
+
+function stepOne() {
+  const p = onb.profile;
+  const field = (key, label, hint, ph) => el("div", { class: "field" }, el("label", { for: "on-" + key }, label),
+    el("input", { id: "on-" + key, value: p[key] || "", placeholder: ph, maxlength: 80, autocomplete: "off", oninput: (e) => { p[key] = e.target.value; } }),
+    hint ? el("small", {}, hint) : null);
+  const chips = el("div", { class: "chipsel", role: "group", "aria-label": "Чем вы занимаетесь" }, INTERESTS.map((t) => {
+    const b = el("button", { type: "button", class: p.interests.includes(t) ? "on" : "", "aria-pressed": String(p.interests.includes(t)), onclick: () => {
+      p.interests = p.interests.includes(t) ? p.interests.filter((x) => x !== t) : [...p.interests, t]; renderOnb(); } }, t);
+    return b;
+  }));
+  const err = el("div", { class: "err", hidden: true });
+  return el("div", {},
+    field("owner", "Как к вам обращаться?", null, "Например, Анна"),
+    field("farm_name", "Название хозяйства", null, "Например, Сыроварня «Зелёный луг»"),
+    field("region", "Регион (по желанию)", "Нужен, чтобы сравнивать цены и спрос с рынком вашего региона", "Например, Тульская область"),
+    el("div", { class: "field" }, el("label", {}, "Чем занимаетесь? (по желанию)"), chips),
+    err,
+    el("div", { class: "note2" }, icon("shield", 16), "Пароль не нужен: это демо. Имена и телефоны покупателей помощнику не нужны, коды клиентов заменяются необратимым хэшем."),
+    el("div", { class: "onbnav" }, el("button", { class: "btn primary", onclick: () => {
+      if (!p.owner.trim() || !p.farm_name.trim()) { err.textContent = "Укажите имя и название хозяйства"; err.hidden = false; return; }
+      saveProfile(); onb.step = 2; renderOnb(); } }, "Дальше", icon("arrow", 18))));
+}
+
+function stepTwo() {
+  const p = onb.profile;
+  return el("div", {},
+    el("p", { style: "color:var(--ink2);margin-bottom:16px" }, `${p.owner}, на каких данных будем работать?`),
+    el("div", { class: "opts" },
+      el("button", { class: "opt", onclick: () => { onb.source = "demo"; onb.step = 3; renderOnb(); } },
+        el("span", { class: "oico" }, icon("field", 26)), el("h3", {}, "Готовое предприятие"),
+        el("p", {}, "Три демо-хозяйства с историей продаж за 90 дней. Быстрее всего посмотреть, как всё работает.")),
+      el("button", { class: "opt", onclick: goUpload },
+        el("span", { class: "oico" }, icon("upload", 26)), el("h3", {}, "Загрузить свои данные"),
+        el("p", {}, "Скачаете шаблоны, заполните в Excel и загрузите. Помощник проверит файлы и покажет ошибки по строкам."))),
+    el("div", { class: "onbnav" }, el("button", { class: "btn", onclick: () => { onb.step = 1; renderOnb(); } }, "Назад"),
+      onb.canClose ? el("button", { class: "btn ghost", onclick: closeOnboarding }, "Остаться как есть") : null));
+}
+
+async function goUpload() {
+  onb.source = "upload";
+  if (!onb.templates) {
+    try { onb.templates = (await api("/templates")).templates; } catch (e) { toast(e.message || "Не удалось получить шаблоны"); return; }
+  }
+  onb.step = 3; renderOnb();
+}
+
+function stepDemo() {
+  const rec = onb.profile.interests.map((i) => INTEREST_FARM[i]).find(Boolean);
+  const cards = Object.entries(FARM_INFO).map(([key, f]) => el("div", { class: "farmcard" + (key === rec ? " rec" : "") },
+    el("div", { class: "txt" }, el("h3", {}, f.title, key === rec ? el("span", { class: "badge ai" }, "подходит вам") : null), el("p", {}, f.text)),
+    el("button", { class: "btn primary", disabled: onb.busy, onclick: () => chooseDemo(key) }, "Выбрать", icon("arrow", 18))));
+  return el("div", {}, el("p", { style: "color:var(--ink2);margin-bottom:14px" }, "Данные синтетические: в них заложены типичные проблемы, чтобы было что находить."),
+    el("div", { class: "farmgrid" }, cards),
+    el("div", { class: "onbnav" }, el("button", { class: "btn", onclick: () => { onb.step = 2; renderOnb(); } }, "Назад")));
+}
+
+async function chooseDemo(key) {
+  onb.busy = true; renderOnb();
+  try { await finishOnboarding(await api("/register", { ...onb.profile, demo_key: key })); }
+  catch (e) { onb.busy = false; renderOnb(); toast(e.message || "Не получилось"); }
+}
+
+function downloadText(filename, text) {
+  const url = URL.createObjectURL(new Blob([text], { type: "text/csv;charset=utf-8" }));
+  const a = el("a", { href: url, download: filename });
+  document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
+
+function slot(t) {
+  const have = onb.files[t.name];
+  const input = el("input", { type: "file", accept: ".csv,.txt,text/csv", onchange: (e) => pickFile(t.name, e.target.files[0]) });
+  return el("div", { class: "slot" + (have ? " ok" : "") },
+    el("div", { class: "slotrow" },
+      el("div", { class: "nm" }, t.title, el("small", {}, have ? "✓ " + onb.names[t.name] : (t.required ? "обязательно" : "по желанию"))),
+      el("button", { class: "btn", onclick: () => downloadText(t.filename, t.content) }, icon("download", 16), "Шаблон"),
+      el("button", { class: "btn", onclick: () => input.click() }, icon("upload", 16), have ? "Заменить" : "Выбрать файл"), input),
+    el("details", {}, el("summary", {}, "Какие столбцы"), el("ul", { class: "cols" }, t.columns.map((c) =>
+      el("li", {}, el("b", {}, c.header), c.required ? " (обязательно)" : "", ` — ${c.hint}. Пример: `, el("code", {}, c.example))))));
+}
+
+async function pickFile(name, file) {
+  if (!file) return;
+  if (file.size > 6e6) { toast("Файл больше 6 МБ: загрузите последние 2–3 месяца"); return; }
+  onb.files[name] = await file.text(); onb.names[name] = file.name; onb.report = null; renderOnb();
+}
+
+async function fillExample() {
+  onb.busy = true; renderOnb();
+  try {
+    const ex = await api("/example/cheese");
+    for (const [k, v] of Object.entries(ex.files)) { onb.files[k] = v; onb.names[k] = `пример-${k}.csv`; }
+    onb.report = null;
+  } catch (e) { toast(e.message || "Не получилось"); }
+  onb.busy = false; renderOnb();
+}
+
+function reportBox(r) {
+  const s = r.summary || {};
+  const nodes = [];
+  if (r.ok) {
+    nodes.push(el("div", { class: "rep ok" }, el("b", {}, "Файлы в порядке. "),
+      `Товаров: ${s.products}, строк продаж: ${s.sales_rows}, клиентов: ${s.customers}, история: ${s.days} дн. (${short(s.from)} — ${short(s.to)}). `,
+      `Помощник будет работать на ${new Date(s.today + "T00:00:00").toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })}, на следующий день после последней продажи.`));
+  } else {
+    nodes.push(el("div", { class: "rep bad" }, el("b", { class: "bd" }, `Нашли ошибок: ${r.total_errors}. `), "Исправьте файлы и загрузите снова.",
+      el("ul", {}, r.errors.map((e) => el("li", {}, el("b", {}, e.file ? `${e.file}${e.row ? `, строка ${e.row}` : ""}: ` : ""), e.message))),
+      r.total_errors > r.errors.length ? el("p", { class: "fine" }, `…и ещё ${r.total_errors - r.errors.length}`) : null));
+  }
+  if (r.warnings && r.warnings.length) nodes.push(el("div", { class: "rep warn" }, icon("warn", 16), " На что обратить внимание:", el("ul", {}, r.warnings.map((w) => el("li", {}, w)))));
+  return nodes;
+}
+
+function stepUpload() {
+  const required = onb.templates.filter((t) => t.required).every((t) => onb.files[t.name]);
+  const ok = onb.report && onb.report.ok;
+  return el("div", {},
+    el("ol", { style: "padding-left:20px;color:var(--ink2);margin:0 0 14px" },
+      el("li", {}, "Скачайте шаблоны (кнопки «Шаблон») и заполните их в Excel или Numbers."),
+      el("li", {}, "Сохраните каждый как CSV (кодировка UTF-8) и загрузите сюда."),
+      el("li", {}, "Нажмите «Проверить»: помощник покажет ошибки по строкам.")),
+    ...onb.templates.map(slot),
+    el("div", { class: "onbnav" },
+      el("button", { class: "btn", disabled: onb.busy, onclick: fillExample }, icon("file", 16), "Подставить пример (сыроварня)"),
+      el("button", { class: "btn primary", disabled: onb.busy || !required, onclick: () => validateFiles(false) }, onb.busy ? "Проверяю…" : "Проверить файлы")),
+    ...(onb.report ? reportBox(onb.report) : []),
+    el("div", { class: "note2" }, icon("shield", 16), "Коды клиентов заменяются необратимым хэшем, имена и телефоны не нужны. Данные хранятся только в этой сессии."),
+    el("div", { class: "onbnav" },
+      el("button", { class: "btn", onclick: () => { onb.step = 2; renderOnb(); } }, "Назад"),
+      ok ? el("button", { class: "btn primary", disabled: onb.busy, onclick: () => validateFiles(true) }, "Начать работу", icon("arrow", 18)) : null));
+}
+
+async function validateFiles(start) {
+  onb.busy = true; renderOnb();
+  try {
+    const r = await api("/import", { files: onb.files, profile: onb.profile, dry_run: !start });
+    onb.report = r;
+    if (start && r.imported) { await finishOnboarding(r); return; }
+  } catch (e) { onb.report = { ok: false, errors: [{ file: "", row: null, message: e.message || "Не получилось" }], total_errors: 1, warnings: [], summary: {} }; }
+  onb.busy = false; renderOnb();
+}
+
+function fillFarms(farms, selected) {
+  const sel = $("#farm");
+  sel.replaceChildren(...farms.map((f) => el("option", { value: f.key }, f.custom ? `★ ${f.name}` : f.name)));
+  if (selected) sel.value = selected;
+}
+function updateProfileButton(profile) {
+  const b = $("#profileBtn");
+  b.hidden = !profile;
+  b.replaceChildren(icon("user", 18), profile ? profile.owner : "");
+}
+async function finishOnboarding(v) {
+  saveProfile(); closeOnboarding(); updateProfileButton(v.profile); fillFarms(v.farms, v.active);
+  lastEffect = 0; chatHistory = []; $("#chatlog").replaceChildren();
+  await load(v.active);
+  maybeTour();
+}
+
+
+/* ---------- кабинет: вход и регистрация ---------- */
+let authMode = "login", authBusy = false, authError = "", authEmail = "";
+
+function showAuth(mode) {
+  authMode = mode || authMode; authError = "";
+  $("#onb").hidden = true; $("#tour").hidden = true; $("#auth").hidden = false; document.body.style.overflow = "hidden";
+  renderAuth();
+}
+function hideAuth() { $("#auth").hidden = true; document.body.style.overflow = ""; }
+
+function renderAuth() {
+  const reg = authMode === "register";
+  const email = el("input", { id: "au-email", type: "email", value: authEmail, autocomplete: "email", placeholder: "name@example.ru", required: true, maxlength: 254,
+    oninput: (e) => { authEmail = e.target.value; } });
+  const pass = el("input", { id: "au-pass", type: "password", autocomplete: reg ? "new-password" : "current-password", placeholder: reg ? "Не короче 8 символов" : "Ваш пароль", required: true, maxlength: 128 });
+  const eye = el("button", { type: "button", "aria-label": "Показать пароль", onclick: () => { pass.type = pass.type === "password" ? "text" : "password"; } }, icon("eye", 18));
+  const err = el("div", { class: "err", role: "alert", hidden: !authError }, authError);
+  const form = el("form", { onsubmit: (e) => { e.preventDefault(); submitAuth(email.value, pass.value); } },
+    el("div", { class: "field" }, el("label", { for: "au-email" }, "Почта"), email),
+    el("div", { class: "field" }, el("label", { for: "au-pass" }, "Пароль"), el("div", { class: "pw" }, pass, eye),
+      reg ? el("small", {}, "Не короче 8 символов, лучше буквы и цифры вместе. Пароль хранится только в виде необратимого хэша.") : null),
+    err,
+    el("button", { class: "btn primary", type: "submit", disabled: authBusy, style: "width:100%;justify-content:center" }, authBusy ? "Секунду…" : reg ? "Создать кабинет" : "Войти", icon("arrow", 18)));
+  $("#auth").replaceChildren(el("div", { class: "onbin authbox" },
+    el("div", { class: "onbhead" }, el("div", {}, el("div", { class: "kick" }, "Помощник роста"), el("h1", {}, reg ? "Создайте кабинет" : "Войдите в кабинет"))),
+    el("div", { class: "onbcard" },
+      el("div", { class: "tabs2", role: "tablist" },
+        el("button", { class: reg ? "" : "on", type: "button", role: "tab", onclick: () => showAuth("login") }, "Войти"),
+        el("button", { class: reg ? "on" : "", type: "button", role: "tab", onclick: () => showAuth("register") }, "Создать кабинет")),
+      form,
+      el("div", { class: "note2" }, icon("shield", 16), "Кабинет хранится на этом компьютере. Письма пока не отправляются: если забыли пароль, его сбрасывают командой в терминале: python3 -m engine.accounts reset ваша@почта"))));
+  (authEmail ? pass : email).focus();
+}
+
+async function submitAuth(emailValue, password) {
+  authBusy = true; authError = ""; renderAuth();
+  try {
+    const r = await api("/auth/" + authMode, { email: emailValue, password });
+    account = r.account; authBusy = false; authError = "";
+    hideAuth(); updateAccountUi(); await startApp();
+  } catch (e) { authBusy = false; authError = e.message || "Не получилось"; renderAuth(); }
+}
+
+function updateAccountUi() {
+  const b = $("#logoutBtn");
+  b.hidden = !(authRequired && account);
+  b.replaceChildren(icon("logout", 18));
+  if (account) b.title = `Выйти (${account.email})`;
+}
+
+async function logout() {
+  try { await api("/auth/logout", {}); } catch (e) {}
+  account = null; chatHistory = []; $("#chatlog").replaceChildren(); lastEffect = 0;
+  try { localStorage.removeItem("profile"); } catch (e) {}
+  onb = { ...onb, profile: { owner: "", farm_name: "", region: "", interests: [] }, files: {}, names: {}, source: null, report: null };
+  updateAccountUi(); updateProfileButton(null); closeOnboarding(); showAuth("login");
+}
+
+/* ---------- короткая инструкция ---------- */
+const TOUR = [
+  { ico: "clock", title: "Каждый день три дела", text: "Помощник смотрит продажи, остатки и сроки годности и выбирает три самых важных дела на сегодня. У каждого написано, сколько денег оно может принести за неделю.",
+    demo: () => [el("span", { class: "chip u3" }, el("span", { class: "dot" }), "Срочно"), el("b", { style: "font-size:22px;color:var(--brand)" }, "+6 100 ₽"), el("span", { class: "fine", style: "margin:0" }, "за неделю · ~1 мин вашего времени")] },
+  { ico: "spark", title: "Понятно, почему именно это", text: "В карточке есть пояснение простыми словами и раскрывающийся расчёт. Цифры считает программа, ИИ только пересказывает их, и каждое число сверяется с расчётом.",
+    demo: () => [el("span", { class: "badge ai" }, icon("shield", 13), "ИИ · числа проверены"), el("span", { class: "fine", style: "margin:0" }, "Нашёл выдуманное число — покажет шаблон")] },
+  { ico: "shield", title: "Решаете вы", text: "Нажмите «Посмотреть и запустить»: увидите, что именно изменится. Ничего не происходит без вашего «Подтвердить», а большинство действий можно откатить.",
+    demo: () => [el("span", { class: "btn primary" }, "Посмотреть и запустить", icon("arrow", 16)), el("span", { class: "btn" }, "Подтвердить"), el("span", { class: "btn" }, icon("undo", 15), "Откатить")] },
+  { ico: "forward", title: "Проверка через неделю", text: "Кнопка «Перемотать на 7 дней» в демо показывает, что получилось бы: прогноз сравнивается с результатом, и помощник учится на разнице. «Следующий день» нужна только для теста.",
+    demo: () => [el("span", { class: "btn primary" }, icon("forward", 16), "Перемотать на 7 дней"), el("span", { class: "fine", style: "margin:0" }, "прогноз против факта")] },
+  { ico: "chat", title: "Спросите в чате", text: "Кнопка «Спросить помощника» отвечает по вашим данным: «почему творог?», «а если скидка 15%?», «сколько можем заработать?». Свои данные загружаются через кнопку с вашим именем сверху.",
+    demo: () => [el("span", { class: "msg me", style: "animation:none" }, "А если скидка 15%?"), el("span", { class: "msg bot", style: "animation:none" }, "Скидка 15%: около +2 700 ₽ за неделю")] },
+];
+const tourKey = () => "tour_v1_" + (account ? account.id : "guest");
+
+function maybeTour() { try { if (localStorage.getItem(tourKey())) return; } catch (e) {} openTour(0); }
+function openTour(i) { $("#tour").hidden = false; renderTour(i); }
+function closeTour(done) {
+  $("#tour").hidden = true;
+  if (done) { try { localStorage.setItem(tourKey(), "1"); } catch (e) {} }
+}
+function renderTour(i) {
+  const t = TOUR[i], last = i === TOUR.length - 1;
+  $("#tour").replaceChildren(el("div", { class: "tourcard" },
+    el("div", { class: "fine", style: "margin:0 0 10px" }, `Как это работает · ${i + 1} из ${TOUR.length}`),
+    el("div", { class: "ico" }, icon(t.ico, 28)), el("h2", {}, t.title), el("p", {}, t.text),
+    el("div", { class: "tdemo", "aria-hidden": "true" }, t.demo()),
+    el("div", { class: "tdots" }, TOUR.map((_, k) => el("i", { class: k <= i ? "on" : "" }))),
+    el("div", { class: "tnav" },
+      i > 0 ? el("button", { class: "btn", onclick: () => renderTour(i - 1) }, "Назад") : null,
+      el("span", { class: "sp" }),
+      last ? null : el("button", { class: "btn ghost", onclick: () => closeTour(true) }, "Пропустить"),
+      el("button", { class: "btn primary tnext", onclick: () => (last ? closeTour(true) : renderTour(i + 1)) }, last ? "Понятно, начать" : "Дальше", icon("arrow", 17)))));
+  $("#tour .tnext").focus();
+}
+
+async function startApp() {
+  const sel = $("#farm");
+  const [{ farms }, prof] = await Promise.all([api("/farms"), api("/profile")]);
+  fillFarms(farms, prof.active);
+  updateProfileButton(prof.profile);
+  if (!prof.profile) { openOnboarding(1, false); return; }
+  await load(sel.value);
+  maybeTour();
+}
+
+/* ---------- мелочи ---------- */
+let timer;
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(timer); timer = setTimeout(() => t.classList.remove("show"), 2800); }
+const tip = $("#tip");
+function showTip(e) {
+  const t = e.target.closest && e.target.closest("[data-tip]");
+  if (!t) return hideTip();
+  tip.textContent = t.dataset.tip; const r = t.getBoundingClientRect();
+  tip.style.left = Math.max(8, Math.min(innerWidth - 270, r.left + r.width / 2 - 130)) + "px"; tip.style.top = Math.max(8, r.top - 64) + "px"; tip.classList.add("show");
+}
+function hideTip() { tip.classList.remove("show"); }
+document.addEventListener("mouseover", showTip); document.addEventListener("mouseout", hideTip);
+document.addEventListener("focusin", showTip); document.addEventListener("focusout", hideTip);
+document.addEventListener("click", () => document.querySelectorAll(".menu ul").forEach((u) => { u.hidden = true; }));
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeDrawer(); closeReport(); chatOpen(false); if (onb.canClose && !$("#onb").hidden) closeOnboarding(); if (!$("#tour").hidden) closeTour(true); } });
+$("#scrim").addEventListener("click", closeDrawer);
+$("#chatfab").append(icon("chat", 20), "Спросить помощника");
+$("#chatfab").addEventListener("click", () => chatOpen(true));
+$("#chatClose").append(icon("x", 18)); $("#chatClose").addEventListener("click", () => chatOpen(false));
+$("#chatAv").append(icon("spark", 22)); $("#chatform button").append(icon("send", 18));
+$("#chatform").addEventListener("submit", (e) => { e.preventDefault(); chatSend($("#chatin").value); });
+$("#reset").addEventListener("click", async () => { await api("/reset", {}); lastEffect = 0; chatHistory = []; $("#chatlog").replaceChildren(); toast("Демо сброшено"); await load(); });
+$("#resetProfile").addEventListener("click", async () => {
+  await api("/profile/clear", {});
+  try { localStorage.removeItem("profile"); } catch (e) {}
+  onb = { ...onb, profile: { owner: "", farm_name: "", region: "", interests: [] }, files: {}, names: {}, source: null };
+  const { farms } = await api("/farms"); fillFarms(farms); updateProfileButton(null);
+  openOnboarding(1, false);
+});
+$("#profileBtn").addEventListener("click", () => openOnboarding(2, true));
+$("#deliveryBtn").append(icon("truck", 18), "Доставка");
+$("#helpBtn").append(icon("help", 20)); $("#helpBtn").addEventListener("click", () => openTour(0));
+$("#logoutBtn").addEventListener("click", logout);
+
+(async () => {
+  try {
+    if (window.__boot) {
+      await window.__boot;
+      $(".foot").append(el("span", {}, " Автономная версия: всё считается прямо в вашем браузере, на сервер ничего не отправляется; ИИ работает в демо-режиме."));
+    }
+    const sel = $("#farm");
+    sel.addEventListener("change", () => { lastEffect = 0; load(sel.value); });
+    const me = await api("/auth/me");
+    authRequired = me.required; account = me.account;
+    updateAccountUi();
+    if (authRequired && !account) { showAuth("login"); return; }
+    await startApp();
+  } catch (e) {
+    $("#cards").replaceChildren(el("div", { class: "panel" }, el("h3", {}, "Не удалось загрузить данные"), el("p", {}, "Проверьте, что сервер запущен, и обновите страницу.")));
+  }
+})();
+</script>
+</body>
+</html>
