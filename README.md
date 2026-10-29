@@ -9,6 +9,7 @@
 ![Python](https://img.shields.io/badge/python-3.9%2B-2E7D4F)
 ![Зависимости](https://img.shields.io/badge/зависимости-нет-2E7D4F)
 ![Данные](https://img.shields.io/badge/данные-синтетические-D98A1B)
+[![Лицензия: MIT](https://img.shields.io/badge/лицензия-MIT-2E7D4F)](LICENSE)
 
 [**Открыть демо**](https://fedorsolodkin.github.io/Farm-Helper/) · [Как это устроено](docs/design.md) · [Интервью](docs/interview.md)
 
@@ -115,6 +116,6 @@ docs/      как это устроено и разбор интервью
 - Проверка чисел не ловит смысловые ошибки модели без неверных чисел.
 - Допущения доставки (скорость, стоимость километра) условные.
 
-## Автор
+## Автор и лицензия
 
-[FedorSolodkin](https://github.com/FedorSolodkin)
+[FedorSolodkin](https://github.com/FedorSolodkin). Код распространяется по лицензии [MIT](LICENSE).
