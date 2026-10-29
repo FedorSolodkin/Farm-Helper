@@ -81,21 +81,28 @@ def verdict(fact: float, low: float, high: float) -> str:
 
 
 def build_report(farm: Farm, executions: List[Execution], base: Sim, without_each: Dict[str, Sim], without_all: Sim,
-                 cal: Dict[str, List[float]], start, days: int) -> dict:
-    """Считает отчёт и обновляет калибровку по результатам."""
+                 cal: Dict[str, List[float]], start, days: int, prior: Optional[dict] = None) -> dict:
+    """Считает отчёт по всем принятым делам и обновляет калибровку.
+
+    Факт дела копится с дня подтверждения: прежние дни (`prior`) плюс неделя отчёта. В калибровку дело попадает один раз,
+    когда набрало неделю."""
+    prior = prior or {}
     rows = []
     for ex in executions:
         m = measure(farm, ex, base, without_each[ex.id])
+        before = prior.get(ex.id, {"fact": 0.0, "days": 0})
+        m["fact"] += before["fact"]
         low, mid, high = ex.effect
         v = verdict(m["fact"], low, high)
         kind = ex.action_key.split(":")[0]
         n_before, scale_before, _ = stats(cal, kind)
-        calibration.record(cal, kind, mid, m["fact"])
+        if before["days"] < 7:
+            calibration.record(cal, kind, mid, m["fact"])
         n, scale, acc = stats(cal, kind)
         rows.append({
             "key": ex.action_key, "type": ex.type, "title": ex.summary,
             "forecast": {"low": round(low), "mid": round(mid), "high": round(high)},
-            "fact": round(m["fact"]), "ratio": round(m["fact"] / mid, 2) if mid else None,
+            "days": before["days"] + days, "fact": round(m["fact"]), "ratio": round(m["fact"] / mid, 2) if mid else None,
             "verdict": v, "details": m["details"],
             "learning": {"checks": n, "scale_before": round(scale_before, 2), "scale_after": round(scale, 2),
                          "accuracy": round(acc, 2)},

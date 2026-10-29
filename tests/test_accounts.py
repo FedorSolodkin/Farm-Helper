@@ -326,16 +326,6 @@ class Screens(unittest.TestCase):
         for text in ("Создайте кабинет", "Войдите в кабинет", "Как это работает", "Понятно, начать", "Каждый день три дела", "Решаете вы"):
             self.assertIn(text, html)
 
-    def test_browser_build_has_no_accounts_and_no_login(self):
-        import subprocess, sys
-        root = pathlib.Path(__file__).resolve().parent.parent
-        subprocess.run([sys.executable, str(root / "tools" / "build_pages.py")], check=True, capture_output=True)
-        names = {p.name for p in (root / "deploy_pages").iterdir()}
-        self.assertNotIn("accounts.py", names)
-        r = subprocess.run([sys.executable, "-c", "import json, webapi; print(json.loads(webapi.handle('GET', '/api/auth/me'))['payload'])"],
-                           cwd=root / "deploy_pages", capture_output=True, text=True)
-        self.assertIn("'required': False", r.stdout, r.stderr)
-
 
 if __name__ == "__main__":
     unittest.main()

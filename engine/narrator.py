@@ -9,7 +9,6 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
@@ -107,7 +106,7 @@ class Narrator:
 
     # --- публичное ---
     def narrate_many(self, farm: Farm, actions: List[Action]) -> Dict[str, Narration]:
-        if len(actions) < 2 or sys.platform == "emscripten":  # в браузере потоков нет
+        if len(actions) < 2:
             return {a.key: self.narrate(farm, a) for a in actions}
         with ThreadPoolExecutor(max_workers=3) as pool:
             results = list(pool.map(lambda a: self.narrate(farm, a), actions))

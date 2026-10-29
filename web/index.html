@@ -457,7 +457,6 @@ function el(tag, props, ...kids) {
   return node;
 }
 async function api(path, body) {
-  if (window.__localApi) return window.__localApi(path, body);  // автономная версия: движок работает в браузере
   const res = await fetch("/api" + path, body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
   const data = await res.json();
   if (!res.ok) {
@@ -541,7 +540,7 @@ function render() {
     el("div", { class: "days" + (view.can_rewind ? " on" : "") }, [1, 2, 3, 4, 5, 6, 7].map(() => el("i"))),
     el("button", { class: "btn primary rwbtn", disabled: !view.can_rewind, onclick: rewind }, icon("forward", 18), "Перемотать на 7 дней"),
     el("button", { class: "btn rwbtn", style: "margin-top:8px", onclick: nextDay, title: "Только для теста: прокручивает один день без отчёта" }, icon("arrow", 18), "Следующий день (для теста)"),
-    el("p", { class: "fine" }, "Отчёт «прогноз против факта» измеряет дела текущего дня."));
+    el("p", { class: "fine" }, "В отчёт попадают все принятые дела, которые ещё не проверяли: факт считается с дня подтверждения."));
 
   const n = view.done.length + view.actions.length;
   $("#cards").replaceChildren(
@@ -751,7 +750,7 @@ function showReport(r) {
         el("i", { class: "fact " + a.verdict, style: `left:${pos(a.fact)}%` }),
         el("span", { class: "lab", style: `left:${Math.min(88, Math.max(12, pos(a.fact)))}%` }, "факт " + sign(a.fact))),
       el("div", { class: "axis" }, el("span", {}, "0"), el("span", {}, compact(max) + " ₽")),
-      el("div", { class: "nums" }, el("span", {}, "Прогноз ", el("b", {}, sign(a.forecast.mid)), ` · диапазон ${fmtRub(a.forecast.low)} — ${fmtRub(a.forecast.high)}`)),
+      el("div", { class: "nums" }, el("span", {}, "Прогноз ", el("b", {}, sign(a.forecast.mid)), ` · диапазон ${fmtRub(a.forecast.low)} — ${fmtRub(a.forecast.high)}` + (a.days > 7 ? ` · факт за ${a.days} ${dayWord(a.days)} с подтверждения` : ""))),
       a.details.length ? el("ul", { class: "why", style: "margin-top:10px" }, a.details.map((x) => el("li", {}, x))) : null,
       el("div", { class: "learn" }, icon("spark", 16), learning(a)));
   });
@@ -1195,10 +1194,6 @@ $("#logoutBtn").addEventListener("click", logout);
 
 (async () => {
   try {
-    if (window.__boot) {
-      await window.__boot;
-      $(".foot").append(el("span", {}, " Автономная версия: всё считается прямо в вашем браузере, на сервер ничего не отправляется; ИИ работает в демо-режиме."));
-    }
     const sel = $("#farm");
     sel.addEventListener("change", () => { lastEffect = 0; load(sel.value); });
     const me = await api("/auth/me");

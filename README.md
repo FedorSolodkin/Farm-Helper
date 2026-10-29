@@ -11,7 +11,7 @@
 ![Данные](https://img.shields.io/badge/данные-синтетические-D98A1B)
 [![Лицензия: MIT](https://img.shields.io/badge/лицензия-MIT-2E7D4F)](LICENSE)
 
-[**Открыть демо**](https://fedorsolodkin.github.io/Farm-Helper/) · [Как это устроено](docs/design.md) · [Интервью](docs/interview.md)
+[Как это устроено](docs/design.md) · [Разбор интервью](docs/interview.md)
 
 <img src="docs/img/01-three-tasks.png" alt="Экран «Три дела на сегодня»" width="900">
 
@@ -62,10 +62,6 @@ python3 -m engine.server
 
 Без кабинета (все заходят как гости): `python3 -m engine.server --no-auth`.
 
-### Демо без установки
-
-[Версия на GitHub Pages](https://fedorsolodkin.github.io/Farm-Helper/) запускает тот же движок прямо в браузере. Первый запуск занимает 5–15 секунд, ИИ работает в демо-режиме, кабинета нет, состояние сбрасывается при обновлении страницы.
-
 ### Docker
 
 ```bash
@@ -102,11 +98,11 @@ python3 -m unittest discover -s tests -t .
 engine/    логика на чистом Python: сигналы, приоритеты, подтверждение, ИИ-тексты, доставка, сервер
 web/       экран «Три дела» и страница «Доставка» (HTML без сборки)
 tests/     автотесты
-tools/     сборка статической версии для GitHub Pages и плоской папки для хостинга
+tools/     сборка плоской папки для обычного хостинга
 docs/      как это устроено и разбор интервью
 ```
 
-Автоматические проверки и публикация демо на GitHub Pages настроены в `.github/workflows/`.
+Автоматические проверки на каждый пуш настроены в `.github/workflows/`.
 
 
 

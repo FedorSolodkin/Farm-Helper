@@ -7,8 +7,6 @@ __pycache__/
 secrets.env
 deploy_flat/
 deploy_flat.zip
-deploy_pages/
-deploy_pages.zip
 audit.jsonl
 *.log
 data/

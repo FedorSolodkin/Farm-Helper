@@ -57,6 +57,20 @@ class Results(unittest.TestCase):
         dispatch(a, "POST", "/api/farms/cheese/nextday", {})
         self.assertEqual(results(a)["items"][0]["days"], 8)
 
+    def test_weekly_report_covers_actions_from_earlier_days_once(self):
+        a = Assistant(llm=None)
+        first = confirm_first(a)[0]
+        dispatch(a, "POST", "/api/farms/cheese/nextday", {})
+        second = confirm_first(a)[0]
+        self.assertNotEqual(first["key"], second["key"])
+        st, body = dispatch(a, "POST", "/api/farms/cheese/rewind", {})
+        self.assertEqual(st, 200)
+        rows = {r["key"]: r for r in body["report"]["actions"]}
+        self.assertEqual({first["key"], second["key"]}, set(rows))
+        self.assertEqual((rows[first["key"]]["days"], rows[second["key"]]["days"]), (8, 7))  # факт копится с дня подтверждения
+        self.assertEqual(sum(len(v) for v in a.cal["cheese"].values()), 2)  # в калибровку каждое дело попало один раз
+        self.assertEqual(dispatch(a, "POST", "/api/farms/cheese/rewind", {})[0], 409)  # все дела уже проверены
+
     def test_rolled_back_action_is_not_tracked_and_other_farms_are_separate(self):
         a = Assistant(llm=None)
         acts = dispatch(a, "GET", "/api/farms/cheese/today")[1]["actions"]

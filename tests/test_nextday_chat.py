@@ -70,13 +70,17 @@ class NextDay(unittest.TestCase):
         self.assertGreater(len(self.farm.orders), orders)
         self.assertEqual(self.a.today_view("cheese")["date"], self.farm.today.isoformat())
 
-    def test_yesterdays_confirmations_do_not_carry_over(self):
+    def test_yesterdays_confirmation_is_not_in_todays_list_but_still_gets_its_weekly_report(self):
         confirm(self.a, "cheese", "spoilage:tvorog")
         self.assertEqual(len(self.a.today_view("cheese")["done"]), 1)
         self.a.next_day("cheese")
         view = self.a.today_view("cheese")
         self.assertEqual((len(view["done"]), view["summary"]["total"]), (0, 3))
-        self.assertFalse(view["can_rewind"])
+        self.assertTrue(view["can_rewind"])  # вчерашнее дело всё ещё ждёт недельного вердикта
+        report = self.a.rewind("cheese")["report"]
+        row = report["actions"][0]
+        self.assertEqual((report["totals"]["count"], row["key"], row["days"]), (1, "spoilage:tvorog", 8))  # 1 день + неделя отчёта
+        self.assertFalse(self.a.today_view("cheese")["can_rewind"])  # после вердикта дело в отчёт не вернётся
         with self.assertRaises(ApiError) as cm:
             self.a.rewind("cheese")
         self.assertEqual(cm.exception.code, "nothing_to_check")

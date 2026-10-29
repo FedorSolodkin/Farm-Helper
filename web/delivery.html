@@ -234,7 +234,6 @@ function sv(tag, props, ...kids) {
   return node;
 }
 async function api(path, body) {
-  if (window.__localApi) return window.__localApi(path, body);  // автономная версия: движок работает в браузере
   const res = await fetch("/api" + path, body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
   const data = await res.json();
   if (!res.ok) throw Object.assign(new Error(data.error.message), { code: data.error.code });
@@ -519,7 +518,6 @@ $("#helpBtn").append(icon("help", 20)); $("#helpBtn").addEventListener("click", 
 
 (async () => {
   try {
-    if (window.__boot) await window.__boot;
     const { farms } = await api("/farms");
     let key = new URLSearchParams(location.search).get("farm");
     if (!farms.some((f) => f.key === key)) { const prof = await api("/profile"); key = farms.some((f) => f.key === prof.active) ? prof.active : farms[0].key; }

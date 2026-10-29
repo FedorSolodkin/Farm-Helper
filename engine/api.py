@@ -1,4 +1,4 @@
-"""Маршруты API без привязки к HTTP: один и тот же код работает в сервере и прямо в браузере (Pyodide)."""
+"""Маршруты API без привязки к HTTP: сервер вызывает их через dispatch(), тесты вызывают напрямую."""
 from __future__ import annotations
 
 from typing import Optional, Tuple

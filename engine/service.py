@@ -249,7 +249,7 @@ class Assistant:
             },
             "actions": actions,
             "done": [e.public() for e in done],
-            "can_rewind": bool(done),
+            "can_rewind": bool(self._unchecked(key)),
             "results": self._results(key),
             "last_report": self._brief(self.reports[key][-1]) if self.reports[key] else None,
             "deferred": [{"key": a.key, "title": a.title, "effect_mid": round(a.effect_mid)} for a in sel.deferred],
@@ -264,17 +264,25 @@ class Assistant:
     # --- перемотка и отчёт ---
     def rewind(self, key: str, days: int = 7) -> dict:
         farm = self._farm(key)
-        done = self.executors[key].active()
-        if not done:
+        tracked = self.executors[key].tracked()
+        pending = self._unchecked(key)
+        if not pending:
             raise ApiError("nothing_to_check", "Нечего проверять: сначала подтвердите хотя бы одно дело", 409)
         profile = build_profile(farm)
         seed = f"{self.world_seed}-{farm.id}-{farm.today.isoformat()}"
         base = simulate(farm, profile, days, seed)
-        each = {ex.id: simulate(counterfactual(farm, done, ex), profile, days, seed) for ex in done}
+        each = {}
+        for ex in tracked:
+            try:
+                each[ex.id] = simulate(counterfactual(farm, [ex], ex), profile, days, seed)
+            except Exception:  # дело нельзя «убрать» из мира: оно выпадает из отчёта
+                continue
+        prior = {ex.id: dict(self.tracking[key].get(ex.id, {"fact": 0.0, "days": 0})) for ex in tracked}
         self._accumulate(key, profile, days, seed, base, each)
-        nothing = simulate(counterfactual(farm, done, None), profile, days, seed)
+        measured = [ex for ex in pending if ex.id in each]
+        nothing = simulate(counterfactual(farm, measured, None), profile, days, seed)
         start = farm.today
-        report = build_report(farm, done, base, each, nothing, self.cal[key], start, days)
+        report = build_report(farm, measured, base, each, nothing, self.cal[key], start, days, prior)
         advance(farm, base)
         self.chat_ctx[key] = {}  # новый день: о делах прошлой недели чат больше не помнит
         self.reports[key].append(report)
@@ -295,6 +303,10 @@ class Assistant:
         self.chat_ctx[key] = {}
         self.audit.append(self.farmer(key), "next_day", None, None, {"from": start.isoformat(), "to": farm.today.isoformat()})
         return {"date": farm.today.isoformat(), "orders": len(sim.orders)}
+
+    def _unchecked(self, key: str) -> list:
+        """Принятые дела, которые ещё не получили недельный вердикт: именно их проверит отчёт."""
+        return [ex for ex in self.executors[key].tracked() if self.tracking[key].get(ex.id, {"days": 0})["days"] < 7]
 
     def _accumulate(self, key: str, profile, days: int, seed: str, base, each: dict) -> None:
         """Добавляет к каждому принятому делу, сколько оно принесло за прожитые дни (разница с миром, где его не запускали)."""
