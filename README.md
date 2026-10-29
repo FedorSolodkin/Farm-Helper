@@ -11,11 +11,15 @@
 ![Данные](https://img.shields.io/badge/данные-синтетические-D98A1B)
 [![Лицензия: MIT](https://img.shields.io/badge/лицензия-MIT-2E7D4F)](LICENSE)
 
-[Как это устроено](docs/design.md) · [Разбор интервью](docs/interview.md)
+[Видео работы](https://drive.google.com/file/d/1tNc9bogVTRufofEVNc6Gt4TqlZrTfk4-/view?usp=sharing) · [Как это устроено](docs/design.md) · [Разбор интервью](docs/interview.md)
 
 <img src="docs/img/01-three-tasks.png" alt="Экран «Три дела на сегодня»" width="900">
 
 </div>
+
+## Видео
+
+Как это работает вживую, за несколько минут: [смотреть видео](https://drive.google.com/file/d/1tNc9bogVTRufofEVNc6Gt4TqlZrTfk4-/view?usp=sharing).
 
 ## Зачем это нужно
 
